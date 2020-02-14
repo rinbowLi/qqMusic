@@ -1,6 +1,6 @@
 <template>
   <div class="item" @click="$router.push(`/list/${itemInfo.dissid}`)">
-    <img :src="itemInfo.imgurl" alt />
+    <img :src="itemInfo.imgurl" alt @load="imgLoad" />
     <p>{{itemInfo.dissname}}</p>
   </div>
 </template>
@@ -13,6 +13,11 @@ export default {
     default() {
       return {};
     }
+  },
+  methods:{
+    imgLoad() {
+      this.$bus.$emit("itemImgLoad");  //图片加载完后刷新better-scroll的高度
+    },
   }
 };
 </script>
@@ -30,6 +35,7 @@ export default {
     margin-top: 0.05rem;
     font-size: var(--small-s);
     color: var(--text-info);
+    text-align: center;
   }
 }
 </style>

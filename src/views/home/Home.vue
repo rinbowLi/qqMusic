@@ -17,6 +17,8 @@ import Scroll from "@/components/common/scroll/Scroll";
 import HotSong from "./childComponents/HotSong";
 import HotMv from "./childComponents/HotMv";
 
+import { debounce } from "@/assets/js/utils";
+
 export default {
   name: "Home",
   components: {
@@ -34,8 +36,18 @@ export default {
           { name: "排行", path: "/rank" },
           { name: "我喜欢", path: "/fav" }
         ]
-      }
+      },
+      itemIamgeFunc: null,
+      newRefresh: null
     };
+  },
+  mounted() {
+    this.newRefresh =
+      this.$refs.scroll && debounce(this.$refs.scroll.refresh, 100);
+    this.itemIamgeFunc = () => {
+      this.newRefresh();
+    };
+    this.$bus.$on("itemImgLoad", this.itemIamgeFunc);
   }
 };
 </script>

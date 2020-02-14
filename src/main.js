@@ -2,12 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import utils from '@/assets/js/utils'
+import {resetHtml} from '@/assets/js/utils'
 
 import '@/assets/css/main.css'
 
 Vue.config.productionTip = false
-utils.resetHtml();  // 重置html的fontsize
+Vue.prototype.$bus = new Vue();
+resetHtml();  // 重置html的fontsize
 new Vue({
   router,
   store,
