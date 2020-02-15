@@ -1,6 +1,6 @@
 <template>
   <div class="item" @click="$router.push(`/list/${itemInfo.dissid}`)">
-    <img :src="itemInfo.imgurl" alt @load="imgLoad" />
+    <img v-lazy="itemInfo.imgurl" alt @load="imgLoad" />
     <p>{{itemInfo.dissname}}</p>
   </div>
 </template>

@@ -8,7 +8,7 @@
     </div>
 
     <div class="header clear" v-if="sectionInfo">
-      <img :src="sectionInfo.logo" alt />
+      <img v-lazy="sectionInfo.logo" alt />
     </div>
     <div class="list">
       <h3>

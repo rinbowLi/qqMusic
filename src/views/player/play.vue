@@ -2,7 +2,7 @@
   <div id="player" @touchmove.stop v-show="$store.state.playlist.length>0">
     <div id="miniPlayer" v-show="!$store.state.fullscreen">
       <div class="left" @click="setFullScreen(true)">
-        <img v-if="player" :src="songPic" :class="{active: !player.paused}" alt />
+        <img v-if="player" v-lazy="songPic" :class="{active: !player.paused}" alt />
       </div>
       <div class="center nowrap" v-if="songInfo" @click="setFullScreen(true)">
         <div class="name">{{songInfo.title}}</div>
@@ -17,7 +17,7 @@
     <div id="pagePlayer" v-show="$store.state.fullscreen">
       <div class="background">
         <div class="back"></div>
-        <img :src="songPic" alt v-if="songPic" />
+        <img v-lazy="songPic" alt v-if="songPic" />
       </div>
       <div class="top">
         <div class="navWrapper clear">
@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="center" v-if="!showLyric">
-        <img :src="songPic" alt v-if="songPic" @click="showLyric=!showLyric" />
+        <img v-lazy="songPic" alt v-if="songPic" @click="showLyric=!showLyric" />
         <div class="infos" v-if="songInfo">
           <div class="left">
             <div class="name">

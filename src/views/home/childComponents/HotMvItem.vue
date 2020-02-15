@@ -1,6 +1,6 @@
 <template>
   <div class="itemInfo clear" @click="$router.push(`/mv/${itemInfo.vid}`)">
-    <img :src="itemInfo.picurl" alt @load="imgLoad" />
+    <img v-lazy="itemInfo.picurl" alt @load="imgLoad" />
     <p>{{itemInfo.singers[0].name}}-{{itemInfo.title}}</p>
   </div>
 </template>
