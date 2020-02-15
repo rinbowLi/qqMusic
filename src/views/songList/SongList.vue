@@ -1,5 +1,5 @@
 <template>
-  <div class="topList clear" ref="test" @scroll="scroll($event)">
+  <div class="topList clear" :style="{'bottom':$store.state.playlist.length>0?'0.6rem':'0'}" ref="test" @scroll="scroll($event)">
     <div class="back" :style="style">
       <span class="back" @click="$router.back()">
         <i class="iconfont icon-fanhui" />返回

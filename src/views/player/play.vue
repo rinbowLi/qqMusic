@@ -1,6 +1,6 @@
 <template>
-  <div id="player">
-    <div id="miniPlayer">
+  <div id="player" @touchmove.stop v-show="$store.state.playlist.length>0">
+    <div id="miniPlayer" v-show="!$store.state.fullscreen">
       <div class="left" @click="setFullScreen(true)">
         <img v-if="player" :src="songPic" :class="{active: !player.paused}" alt />
       </div>
@@ -12,6 +12,97 @@
         <i class="iconfont icon-zanting active" v-if="player.paused" @click="changeStatus(true)"></i>
         <i class="iconfont icon-bofang" v-else @click="changeStatus(false)"></i>
         <i class="iconfont icon-liebiao" @click="showList=!showList"></i>
+      </div>
+    </div>
+    <div id="pagePlayer" v-show="$store.state.fullscreen">
+      <div class="background">
+        <div class="back"></div>
+        <img :src="songPic" alt v-if="songPic" />
+      </div>
+      <div class="top">
+        <div class="navWrapper clear">
+          <div class="back" @click="backClick">
+            <i class="iconfont icon-wei-" />
+          </div>
+          <div class="nav">
+            <span v-if="songInfo" class="first-marquee">{{songInfo.title}}</span>
+            <span v-if="songInfo" class="second-marquee">{{songInfo.title}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="center" v-if="!showLyric">
+        <img :src="songPic" alt v-if="songPic" @click="showLyric=!showLyric" />
+        <div class="infos" v-if="songInfo">
+          <div class="left">
+            <div class="name">
+              {{songInfo.title}}
+              <span class="mv" v-if="songInfo.mv.id!==0" @click="goMv">MV</span>
+            </div>
+            <div class="singer">{{songInfo.singer[0].name}}</div>
+            <div class="album">
+              <span>专辑:</span>
+              {{songInfo.album.name}}
+            </div>
+            <div class="timePublic">
+              <span>发行:</span>
+              {{songInfo.time_public}}
+            </div>
+          </div>
+          <div class="right">
+            <i class="iconfont icon-xiai" />
+            <a v-if="src&&songInfo" :href="src" target="_blank">
+              <i class="iconfont icon-xiazai" />
+            </a>
+            <!--:download="`${songInfo.title}-${songInfo.singer[0].name}.mp3`"-->
+          </div>
+        </div>
+      </div>
+      <div class="center2" v-else @click="showLyric=!showLyric">
+        <div class="lyric">暂无歌词</div>
+      </div>
+      <div class="bottom">
+        <audio
+          autoplay
+          ref="audio"
+          :src="src"
+          @ended="end"
+          @canplay="canPlay"
+          @error="error"
+          @timeupdate="timeUpdate"
+        />
+        <div class="progress-wrapper">
+          <span class="time time-l">{{format(currentTime)}}</span>
+          <div class="progress-bar-wrapper">
+            <ProgressBar
+              :percent="percent"
+              @percentChange="percentChange"
+              @percentChangeEnd="percentChangeEnd"
+            />
+          </div>
+          <span class="time time-r">{{format(duration)}}</span>
+        </div>
+        <div class="operators" v-if="player">
+          <div class="icon i-left">
+            <i class="iconfont icon-liebiaoxunhuan"></i>
+          </div>
+          <div class="icon i-left">
+            <i class="iconfont icon-kuaitui" @click="changeIndex(-1)"></i>
+          </div>
+          <div class="icon i-center">
+            <i
+              class="iconfont icon-zanting active"
+              v-if="!player.paused"
+              @click="changeStatus(false)"
+            ></i>
+            <i class="iconfont icon-bofang" v-else @click="changeStatus(true)"></i>
+          </div>
+          <div class="icon i-right">
+            <i class="iconfont icon-kuaijin" @click="changeIndex(1)"></i>
+          </div>
+          <div class="icon i-right">
+            <i class="iconfont icon-liebiao" @click="showList=!showList"></i>
+          </div>
+        </div>
       </div>
     </div>
     <div id="list" v-show="showList">
@@ -28,20 +119,20 @@
               <span class="name">{{item.name}}</span>
               <span class="singer">{{item.singer}}</span>
             </div>
-            <div>
+            <div @click="delCurrentIndex(index)">
               <svg
-                t="1581673758285"
+                t="1581733631069"
                 class="icon"
                 viewBox="0 0 1024 1024"
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
-                p-id="851"
-                width="20"
-                height="20"
+                p-id="965"
+                width="18"
+                height="18"
               >
                 <path
                   d="M953.6 0L1024 73.856 583.808 523.008l418.56 427.136L930.944 1024 512 596.352 93.056 1024l-70.4-73.856L440.448 523.52 0 73.856 71.424 0l440.96 450.176L953.472 0z"
-                  p-id="852"
+                  p-id="966"
                   fill="#707070"
                 />
               </svg>
@@ -51,24 +142,17 @@
         <p @click="showList=false">关闭</p>
       </div>
     </div>
-    <audio
-      autoplay
-      id="audio"
-      :src="src"
-      @ended="end"
-      @canplay="canPlay"
-      @error="error"
-      @timeupdate="timeUpdate"
-    />
   </div>
 </template>
 
 <script>
+import ProgressBar from "@/components/common/ProgressBar";
 import { mapMutations } from "vuex";
 import { songApi } from "@/api/song";
 
 export default {
-  name: "play",
+  name: "Player",
+  components: { ProgressBar },
   data() {
     return {
       percent: 0,
@@ -78,11 +162,12 @@ export default {
       player: null,
       songInfo: null,
       songPic: null,
-      showList: false
+      showList: false,
+      showLyric: false
     };
   },
-  mounted() {
-    this.player = document.getElementById("audio");
+  watch: {
+    "$store.state.playlist"(newList) {}
   },
   computed: {
     src() {
@@ -90,36 +175,72 @@ export default {
         let index = this.$store.state.currentIndex;
         let id = this.$store.state.playlist[index].id;
         this.songPic = "https://v1.itooi.cn/tencent/pic?id=" + id;
-        songApi.getSongDetail(id).then(res => {
-          this.songInfo = res.data[0];
+        songApi.getSongDetail(id).then(ret => {
+          this.songInfo = ret.data[0];
+          console.log(this.songInfo);
         });
         return `https://v1.itooi.cn/tencent/url?id=${id}&quality=320`;
       }
     }
   },
+  mounted() {
+    this.player = this.$refs.audio;
+    console.dir(this.player);
+  },
   methods: {
-    ...mapMutations({
-      setFullScreen: "SET_FULL_SCREEN",
-      setCurrentIndex: "SET_CURRENT_INDEX"
-    }),
-    changeStatus(flag) {
-      debugger;
-      if (flag) {
-        this.player.pause();
-      } else {
-        this.player.play();
-      }
+    percentChange(percent) {
+      this.onMove = true;
+      this.currentTime = percent * this.duration;
+    },
+    percentChangeEnd(percent) {
+      this.onMove = false;
+      this.$refs.audio.currentTime = percent * this.duration;
     },
     end() {
       this.setCurrentIndex(this.$store.state.currentIndex + 1);
     },
     canPlay() {},
     error() {},
+    goMv() {
+      this.player.pause();
+      console.log(this.songInfo.mv.id);
+      this.$router.push(`/mv/${this.songInfo.mv.vid}`);
+      this.setFullScreen(false);
+    },
     timeUpdate(e) {
       if (this.onMove) return;
       this.currentTime = e.target.currentTime;
       this.duration = e.target.duration;
       this.percent = this.currentTime / this.duration;
+    },
+    format(interval) {
+      interval = interval | 0;
+      let minute = (interval / 60) | 0;
+      let second = interval % 60;
+      if (second < 10) {
+        second = "0" + second;
+      }
+      return minute + ":" + second;
+    },
+    ...mapMutations({
+      setFullScreen: "SET_FULL_SCREEN",
+      setCurrentIndex: "SET_CURRENT_INDEX",
+      delCurrentIndex: "DeL_CURRENT_INDEX"
+    }),
+    changeIndex(flag) {
+      this.setCurrentIndex(this.$store.state.currentIndex + flag);
+    },
+    changeStatus(flag) {
+      console.log(this.player.play);
+      if (flag) {
+        this.player.play();
+      } else {
+        this.player.pause();
+      }
+    },
+    ///////
+    backClick() {
+      this.setFullScreen(!this.$store.state.fullscreen);
     }
   }
 };
@@ -132,6 +253,46 @@ export default {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+/* 定义第一个span的animation：时长 动画名字 匀速 循环 正常播放 */
+.first-marquee {
+  -webkit-animation: 25s first-marquee linear infinite normal;
+  animation: 25s first-marquee linear infinite normal;
+  padding-right: 70%;
+}
+
+@keyframes first-marquee {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* 向左移动 */
+  100% {
+    -webkit-transform: translate3d(-200%, 0, 0);
+    transform: translate3d(-200%, 0, 0);
+    display: none;
+  }
+}
+
+.second-marquee {
+  /* 因为要在第一个span播完之前就得出现第二个span，所以就延迟12s才播放 */
+  -webkit-animation: 25s first-marquee linear 12s infinite normal;
+  animation: 25s first-marquee linear 12s infinite normal;
+  padding-right: 53%;
+}
+
+@keyframes second-marquee {
+  0% {
+    -webkit-transform: translate3d(0%, 0, 0);
+    transform: translate3d(0%, 0, 0);
+  }
+
+  100% {
+    -webkit-transform: translate3d(-200%, 0, 0);
+    transform: translate3d(-200%, 0, 0);
+    display: none;
   }
 }
 #miniPlayer {
@@ -176,11 +337,193 @@ export default {
     text-align: center;
     line-height: 0.6rem;
     display: flex;
-    position: absolute;
-    right: 0;
     i {
       flex: 1;
       font-size: 0.25rem;
+    }
+  }
+}
+
+#pagePlayer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgb(255, 255, 255);
+
+  .background {
+    position: absolute;
+    left: -50%;
+    top: -50%;
+    width: 300%;
+    height: 300%;
+    z-index: -1;
+    opacity: 0.5;
+    filter: blur(30px);
+
+    img {
+      width: 300%;
+      height: 300%;
+    }
+
+    .back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: black;
+      opacity: 0.6;
+    }
+  }
+
+  .top {
+    height: 10%;
+    color: #ebebeb;
+    position: relative;
+    div.back {
+      width: 0.5rem;
+      height: 0.5rem;
+      line-height: 0.5rem;
+      text-align: center;
+    }
+    div.nav {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: 20px;
+      overflow: hidden;
+      span {
+        position: absolute;
+        top: 0;
+        left: 101%;
+        height: 100%;
+        width: 100%;
+        white-space: nowrap;
+      }
+    }
+  }
+  .center {
+    height: 65%;
+
+    img {
+      width: 3rem;
+      height: 3rem;
+      margin: 0 auto;
+    }
+    .infos {
+      margin-top: 0.3rem;
+      display: flex;
+      justify-content: space-between;
+
+      .left {
+        margin-left: 0.2rem;
+        color: #ebebeb;
+
+        div {
+          margin: 0.1rem 0;
+          font-size: var(--normal);
+
+          &.name {
+            font-size: var(--large-x);
+            span.mv {
+              font-size: var(--small-x);
+              color: #ddff99;
+              border: 1px solid var(--border-color);
+              padding: 0 0.03rem;
+            }
+          }
+        }
+      }
+
+      .right {
+        color: #ebebeb;
+        display: flex;
+        flex-flow: column;
+        margin-right: 0.2rem;
+        justify-content: space-evenly;
+        a {
+          color: #ebebeb;
+          flex: 1;
+        }
+        i {
+          flex: 1;
+          margin: 0.1rem;
+          font-size: var(--large);
+        }
+      }
+    }
+  }
+  .center2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 65%;
+    .lyric {
+      color: #ffffff;
+      width: 20%;
+      height: 0.3rem;
+      line-height: 0.3rem;
+    }
+  }
+  .bottom {
+    height: 25%;
+    padding-top: 0.2rem;
+    .progress-wrapper {
+      color: white;
+      display: flex;
+      width: 80%;
+      margin: 0 auto;
+      padding: 10px 0;
+      font-size: var(--small);
+
+      span {
+        line-height: 0.3rem;
+        width: 30px;
+
+        &:nth-of-type(1) {
+          text-align: left;
+        }
+
+        &:nth-of-type(2) {
+          text-align: right;
+        }
+      }
+
+      div.progress-bar-wrapper {
+        flex: 1;
+      }
+    }
+
+    .operators {
+      line-height: 0.8rem;
+      display: flex;
+      justify-content: space-evenly;
+      text-align: center;
+      div {
+        flex: 1;
+      }
+
+      i {
+        font-size: 0.3rem;
+        color: white;
+
+        &.active {
+          display: inline-block;
+          animation: rotate 5s linear infinite;
+        }
+      }
+      div.i-center {
+        i {
+          font-size: 0.5rem;
+        }
+      }
+      div:nth-of-type(5) {
+        i {
+          font-size: 0.22rem;
+        }
+      }
     }
   }
 }

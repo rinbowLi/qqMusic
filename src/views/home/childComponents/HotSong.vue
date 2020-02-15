@@ -35,7 +35,14 @@ export default {
   components: { HotSongItem },
   data() {
     return {
-      listItems: []
+      listItems: [
+        {
+          dissname: "周杰伦专场",
+          dissid: 7143084629,
+          imgurl:
+            "http://y.gtimg.cn/music/photo_new/T002R300x300M000003RMaRI1iFoYd.jpg?n=1"
+        }
+      ]
     };
   },
   created() {
@@ -51,9 +58,9 @@ export default {
   },
   methods: {
     init() {
-      listApi.getSongListHot(10000000, 1, 1, 6).then(ret => {
-        if (ret.code === 200) {
-          this.listItems = ret.data.list;
+      listApi.getSongListHot(10000000, 1, 1, 5).then(res => {
+        if (res.code === 200) {
+          this.listItems.push(...res.data.list);
         }
       });
     }

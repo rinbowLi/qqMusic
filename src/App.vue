@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-import Play from './views/player/play'
+import Play from './views/player/Play'
 export default {
   name:"App",
   components:{

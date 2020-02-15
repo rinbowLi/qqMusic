@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Header :navInfo="navInfo" />
-    <Scroll class="content" ref="scroll" :probeType="3">
+    <Scroll class="content" ref="scroll" :probeType="3" :class="{active:$store.state.playlist.length>0}">
       <section class="main">
         <HotSong />
         <HotMv />
@@ -52,9 +52,15 @@ export default {
 };
 </script>
 <style scoped>
+.home {
+  position: relative;
+}
 .content {
   height: calc(100vh - 43px);
   position: relative;
   top: 43px;
+}
+.active{
+  height: calc(100vh - 43px - 0.6rem);
 }
 </style>
