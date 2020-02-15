@@ -3,7 +3,8 @@ export const type = {
   SET_PLAYING_STATUS: "SET_PLAYING_STATUS",
   SET_PLAYLIST: "SET_PLAYLIST",
   SET_CURRENT_INDEX: "SET_CURRENT_INDEX",
-  DeL_CURRENT_INDEX: "DeL_CURRENT_INDEX"
+  DeL_CURRENT_INDEX: "DeL_CURRENT_INDEX",
+  Change_Play_Status: "Change_Play_Status" //切换播放模式
 };
 
 
@@ -30,5 +31,44 @@ export const mutations = {
   },
   [type.DeL_CURRENT_INDEX](state, index) {
     state.playlist.splice(index, 1);
+  },
+  [type.Change_Play_Status](state, player) {
+    //当前播放状态所处的index
+    let currentIndex = state.playStatusList.findIndex(
+      status => status === state.playStatus
+    );
+    if (currentIndex === 2) {
+      state.playStatus = "normal";
+      state.playlist = state.playlist2.slice(0);
+      //let curSong = state.playlist[state.currentIndex].id; //保存原歌曲以便设置curIndex
+      // let newCurIndex = state.playlist2.findIndex(item => item.id === curSong);
+      // state.currentIndex = newCurIndex;
+    } else if (currentIndex === 0) {
+      state.playStatus = "loop";
+    } else {
+      state.playlist2 = state.playlist.slice(0); //先存放原歌曲列表
+      getArrRandomly(state.playlist); //打乱歌曲列表
+      //let curSong = state.playlist2[state.currentIndex].id; //保存原歌曲以便设置curIndex
+      //let newCurIndex = state.playlist.findIndex(item => item.id === curSong);
+      state.playStatus = "random";
+      //state.currentIndex = newCurIndex;
+    }
   }
 };
+
+
+//随机打乱数组
+function getArrRandomly(arr) {
+  let len = arr.length;
+  //首先从最大的数开始遍历，之后递减
+  for (let i = len - 1; i >= 0; i--) {
+    //随机索引值randomIndex是从0-arr.length中随机抽取的
+    let randomIndex = Math.floor(Math.random() * (i + 1));
+    //下面三句相当于把从数组中随机抽取到的值与当前遍历的值互换位置
+    let itemIndex = arr[randomIndex];
+    arr[randomIndex] = arr[i];
+    arr[i] = itemIndex;
+  }
+  //每一次的遍历都相当于把从数组中随机抽取（不重复）的一个元素放到数组的最后面（索引顺序为：len-1,len-2,len-3......0）
+  return arr;
+}

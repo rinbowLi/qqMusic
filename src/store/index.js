@@ -17,11 +17,11 @@ export default new Vuex.Store({
 
     hotSongList: null,
 
-    playingStatus: false,
+    fullscreen: false, //是否满屏
 
-    fullscreen: false,
+    playlist: [], //当前播放歌曲列表
 
-    playlist: [],
+    playlist2: [], //播放歌曲列表，用来存放原来的歌曲列表
 
     sequenceList: [],
 
@@ -30,6 +30,10 @@ export default new Vuex.Store({
     currentIndex: -1,
 
     favlist: [],
+
+    playStatus: "normal", //当前播放状态，顺序，单曲，随机
+    playStatusList: ["normal", "loop", "random"], //列表循环，单曲循环，随机播放
+
   },
   mutations,
   actions,
