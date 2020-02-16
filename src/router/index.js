@@ -15,6 +15,11 @@ const routes = [
     name: 'SongList',
     component: () => import('../views/songList/SongList')
   },
+  {
+    path: '/mv/:id',
+    name: 'MvList',
+    component: () => import('../views/mv/Mv')
+  },
   // {
   //   path: '/about',
   //   name: 'About',

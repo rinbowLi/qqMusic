@@ -12,7 +12,7 @@ import FastClick from 'fastclick'
 import '@/assets/css/main.css'
 Vue.use(VueLazyload, {
   preLoad: 1.3,
-  loading: require('@/assets/img/default.jpg'),
+  loading: require('@/assets/img/default.png'),
   attempt: 1
 })
 

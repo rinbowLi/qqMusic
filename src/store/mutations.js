@@ -39,19 +39,19 @@ export const mutations = {
     );
     if (currentIndex === 2) {
       state.playStatus = "normal";
+      let curSong = state.playlist[state.currentIndex].id; //保存原歌曲以便设置curIndex
       state.playlist = state.playlist2.slice(0);
-      //let curSong = state.playlist[state.currentIndex].id; //保存原歌曲以便设置curIndex
-      // let newCurIndex = state.playlist2.findIndex(item => item.id === curSong);
-      // state.currentIndex = newCurIndex;
+      let newCurIndex = state.playlist.findIndex(item => item.id === curSong);
+      state.currentIndex = newCurIndex;
     } else if (currentIndex === 0) {
       state.playStatus = "loop";
     } else {
+      state.playStatus = "random";
+      let curSong1 = state.playlist[state.currentIndex].id; //保存原歌曲以便设置curIndex
       state.playlist2 = state.playlist.slice(0); //先存放原歌曲列表
       getArrRandomly(state.playlist); //打乱歌曲列表
-      //let curSong = state.playlist2[state.currentIndex].id; //保存原歌曲以便设置curIndex
-      //let newCurIndex = state.playlist.findIndex(item => item.id === curSong);
-      state.playStatus = "random";
-      //state.currentIndex = newCurIndex;
+      let newCurIndex1 = state.playlist.findIndex(item => item.id === curSong1);
+      state.currentIndex = newCurIndex1;
     }
   }
 };
