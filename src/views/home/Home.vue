@@ -1,7 +1,13 @@
 <template>
   <div class="home">
     <Header :navInfo="navInfo" />
-    <Scroll class="content" ref="scroll" :probeType="3" :class="{active:$store.state.playlist.length>0}">
+    <SearchBar @click.native="gotoSearch"></SearchBar>
+    <Scroll
+      class="content"
+      ref="scroll"
+      :probeType="3"
+      :class="{active:$store.state.playlist.length>0}"
+    >
       <section class="main">
         <HotSong />
         <HotMv />
@@ -11,8 +17,9 @@
 </template>
 
 <script>
-import Header from "@/components/content/Header";
+import Header from "@/components/content/header/Header";
 import Scroll from "@/components/common/scroll/Scroll";
+import SearchBar from "@/components/content/searchBar/SearchBar";
 
 import HotSong from "./childComponents/HotSong";
 import HotMv from "./childComponents/HotMv";
@@ -25,7 +32,8 @@ export default {
     Header,
     HotMv,
     HotSong,
-    Scroll
+    Scroll,
+    SearchBar
   },
   data() {
     return {
@@ -48,6 +56,11 @@ export default {
       this.newRefresh();
     };
     this.$bus.$on("itemImgLoad", this.itemIamgeFunc);
+  },
+  methods:{
+    gotoSearch(){
+      this.$router.push("/search");
+    }
   }
 };
 </script>
@@ -56,11 +69,11 @@ export default {
   position: relative;
 }
 .content {
-  height: calc(100vh - 43px);
+  height: calc(100vh - 0.94rem);
   position: relative;
-  top: 43px;
+  top: 0.94rem;
 }
-.active{
-  height: calc(100vh - 43px - 0.6rem);
+.active {
+  height: calc(100vh - 0.94rem - 0.6rem);
 }
 </style>

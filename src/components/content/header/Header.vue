@@ -31,6 +31,7 @@ ul {
   z-index: 10;
   position: fixed;
   width: 100%;
+  height: .47rem;
   li {
     flex: 1;
     text-align: center;

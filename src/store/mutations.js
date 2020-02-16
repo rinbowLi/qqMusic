@@ -4,7 +4,8 @@ export const type = {
   SET_PLAYLIST: "SET_PLAYLIST",
   SET_CURRENT_INDEX: "SET_CURRENT_INDEX",
   DeL_CURRENT_INDEX: "DeL_CURRENT_INDEX",
-  Change_Play_Status: "Change_Play_Status" //切换播放模式
+  Change_Play_Status: "Change_Play_Status", //切换播放模式
+  Set_Play_Status: "Set_Play_Status" //切换播放模式
 };
 
 
@@ -53,6 +54,9 @@ export const mutations = {
       let newCurIndex1 = state.playlist.findIndex(item => item.id === curSong1);
       state.currentIndex = newCurIndex1;
     }
+  },
+  [type.Set_Play_Status](state, status) {
+    state.playStatus = status
   }
 };
 

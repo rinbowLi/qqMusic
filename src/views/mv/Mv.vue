@@ -82,12 +82,16 @@ video {
   padding: 0 10px;
   color: #8156e8;
   .title {
+    width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 .download {
   display: block;
   background: #8156e8;
-  width: 80%;
+  width: 75%;
   padding: 0.1rem;
   border-radius: 0.3rem;
   margin: 0.1rem auto;
