@@ -105,7 +105,7 @@
         </li>
       </ul>
       <div class="deleteAllHistory" v-if="searchHistory.length > 0">
-        <span @click="deleteAllHistory()">清楚浏览记录</span>
+        <span @click="deleteAllHistory()">清除浏览记录</span>
       </div>
     </div>
   </div>

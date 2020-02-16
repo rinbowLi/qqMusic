@@ -24,6 +24,16 @@ const routes = [{
     name: 'search',
     component: () => import('../views/search/Search')
   },
+  {
+    path: '/rank',
+    name: 'rank',
+    component: () => import('../views/rank/Rank')
+  },
+  {
+    path: '/rankList/:id',
+    name: 'rankList',
+    component: () => import('../views/rankList/RankList')
+  },
 ]
 
 const router = new VueRouter({

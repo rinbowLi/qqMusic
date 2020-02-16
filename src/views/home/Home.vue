@@ -40,7 +40,7 @@ export default {
       navInfo: {
         activeIndex: 0,
         nav: [
-          { name: "推荐", path: "/recommend" },
+          { name: "推荐", path: "/" },
           { name: "排行", path: "/rank" },
           { name: "我喜欢", path: "/fav" }
         ]
