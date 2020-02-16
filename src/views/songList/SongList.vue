@@ -44,7 +44,7 @@ export default {
   computed: {
     style() {
       return {
-        background: `rgba(230,0,0,${this.opacity})`
+        background: `rgba(129,86,232,${this.opacity})`
       };
     }
   },
@@ -58,10 +58,9 @@ export default {
     }),
     init() {
       let listId = this.$route.params.id;
-      listApi.getSongList(listId).then(ret => {
-        console.log(ret);
-        this.sectionInfo = ret.data[0];
-        this.listInfo = ret.data[0].songlist;
+      listApi.getSongList(listId).then(res => {
+        this.sectionInfo = res.data[0];
+        this.listInfo = res.data[0].songlist;
       });
     },
     scroll(e) {

@@ -245,12 +245,10 @@ export default {
       );
       if (currentIndex === 2) {
         player.loop = false;
-        console.log(player.loop);
         Toast.success("已切换到顺序播放");
         this.changePlayStatus();
       } else if (currentIndex === 0) {
         player.loop = true;
-        console.log(player.loop);
         Toast.success("已切换到单曲循环");
         this.changePlayStatus();
       } else {
@@ -274,7 +272,6 @@ export default {
     error() {},
     goMv() {
       this.player.pause();
-      console.log(this.songInfo.mv.id);
       this.$router.push(`/mv/${this.songInfo.mv.vid}`);
       this.setFullScreen(false);
     },

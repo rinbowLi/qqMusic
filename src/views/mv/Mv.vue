@@ -23,7 +23,7 @@
     </div>
 
     <video :src="videoSrc" autoplay controls :poster="pic"></video>
-    <a class="download" download="test.mp4" :href="videoSrc">下载</a>
+    <a class="download" target="_blank" download="test.mp4" :href="videoSrc">下载</a>
     <div class="info">
       <h3>简介</h3>
       <p>歌手:{{singer}}</p>
@@ -47,14 +47,12 @@ export default {
   },
   created() {
     this.getURL();
-    console.log(this.$route)
   },
   methods: {
     getURL() {
       const id = this.$route.params.id;
       this.videoSrc = `https://v1.itooi.cn/tencent/mvUrl?id=${id}&quality=480`;
       mvApi.getMvDetail(id).then(res => {
-        console.log(res);
         const videoInfo = res.data[id];
         this.videoTitle = videoInfo.name;
         this.videoDesc = videoInfo.desc;
