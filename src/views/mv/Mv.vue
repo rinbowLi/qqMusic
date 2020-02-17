@@ -86,6 +86,7 @@ video {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: center;
   }
 }
 .download {

@@ -1,4 +1,4 @@
 module.exports = {
-  publicPath: "/qq/",
+  publicPath: "/",
   lintOnSave: false
 }
