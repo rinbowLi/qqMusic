@@ -45,7 +45,7 @@ ul {
         left: 50%;
         bottom: 0.05rem;
         transform: translateX(-50%);
-        border-bottom: 2px solid #fa192e;
+        border-bottom: 2px solid #8156e8;
       }
     }
   }

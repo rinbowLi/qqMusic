@@ -17,7 +17,7 @@
         p-id="2705"
       />
     </svg>
-    <van-tabs v-model="active" style="width:80%;margin-left:10%" color="#8156e8">
+    <van-tabs v-model="active" style="width:80%;margin-left:10%" background="#f7f8fa" color="#8156e8">
       <van-tab title="喜欢的歌曲" title-style="color:#8156e8">
         <div class="favSong">
           <div class="noSong">
@@ -91,6 +91,7 @@ export default {
 <style lang="scss" scoped>
 .fav {
   position: relative;
+  background-color: var(--background-color);
   .back {
     position: absolute;
     left: 0.15rem;
