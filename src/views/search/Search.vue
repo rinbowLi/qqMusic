@@ -36,15 +36,24 @@
           <span>点播数:{{singerInfoDetail.extras[0].listen_count}}</span>
         </div>
       </div>
-      <ul class="songList" v-if="listInfo">
-        <li v-for="(item,index) in listInfo" @click="liClick(index)" :key="index">
-          <div class="musicLogo">
-            <i class="iconfont icon-yinle" />
-          </div>
-          <div class="name_li">{{item.name}}</div>
-          <div class="singer_li">{{item.singer}}</div>
-        </li>
-      </ul>
+      <Scroll
+        class="content"
+        ref="scroll"
+        :probeType="3"
+        :pullUpLoad="true"
+        @pullingUp="loadMore"
+        :style="{'top':singerInfoDetail?'1rem':'.5rem'}"
+      >
+        <ul class="songList" v-if="listInfo">
+          <li v-for="(item,index) in listInfo" @click="liClick(index)" :key="index">
+            <div class="musicLogo">
+              <i class="iconfont icon-yinle" />
+            </div>
+            <div class="name_li">{{item.name}}</div>
+            <div class="singer_li">{{item.singer}}</div>
+          </li>
+        </ul>
+      </Scroll>
     </div>
     <div class="searchHistory" v-if="searchHistory.length > 0&&!listInfo">
       <ul>
@@ -101,6 +110,8 @@ import { searchApi } from "@/api/search"; // song singer
 import { singerApi } from "@/api/artist";
 import { mapActions } from "vuex";
 
+import Scroll from "@/components/common/scroll/Scroll";
+
 import Vue from "vue";
 import { Toast } from "vant";
 
@@ -108,6 +119,9 @@ Vue.use(Toast);
 
 export default {
   name: "Search",
+  components: {
+    Scroll
+  },
   data() {
     return {
       keyword: "",
@@ -282,6 +296,14 @@ header {
         margin-right: 0.05rem;
       }
     }
+  }
+  .content {
+    overflow: hidden;
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    right: 0;
+    bottom: 0.6rem;
   }
   .songList {
     padding: 0 0.1rem;
