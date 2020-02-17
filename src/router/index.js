@@ -41,6 +41,11 @@ const routes = [
     name: 'rankList',
     component: () => import('../views/rankList/RankList')
   },
+  {
+    path: '/fav',
+    name: 'fav',
+    component: () => import('../views/fav/Fav')
+  },
 ]
 
 const router = new VueRouter({
