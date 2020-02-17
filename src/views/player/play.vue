@@ -662,7 +662,7 @@ export default {
     color: white;
     text-align: center;
     line-height: 0.4rem;
-    background-color: rgba(255, 109, 140, 0.21);
+    background-color: rgba(129,86,232, 0.21);
   }
 }
 </style>
