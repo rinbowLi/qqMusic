@@ -20,11 +20,11 @@
           />
         </svg>
         <i class="iconfont icon-icon-test"></i>
-        <input placeholder="请输入歌手名或歌曲名" v-model="keyword" @keyup.enter="search()" />
-        <div class="searchText" @click="search()">搜索</div>
+        <input placeholder="请输入歌手名或歌曲名" v-model="keyword" @keyup.enter="search(-1,true)" />
+        <div class="searchText" @click="search(-1,true)">搜索</div>
       </div>
     </header>
-    <div class="list" v-if="listInfo">
+    <div class="list" v-if="listInfo.length>0">
       <div class="singer" v-if="singerInfoDetail">
         <div class="name">
           <span>歌手:</span>
@@ -43,6 +43,7 @@
         :pullUpLoad="true"
         @pullingUp="loadMore"
         :style="{'top':singerInfoDetail?'1rem':'.5rem'}"
+        v-if="listInfo.length>0"
       >
         <ul class="songList" v-if="listInfo">
           <li v-for="(item,index) in listInfo" @click="liClick(index)" :key="index">
@@ -55,7 +56,7 @@
         </ul>
       </Scroll>
     </div>
-    <div class="searchHistory" v-if="searchHistory.length > 0&&!listInfo">
+    <div class="searchHistory" v-if="searchHistory.length > 0&&listInfo.length==0">
       <ul>
         <li v-for="(item,index) in searchHistory" :key="index" @click="searchForHistory(item)">
           <div class="item">
@@ -111,6 +112,7 @@ import { singerApi } from "@/api/artist";
 import { mapActions } from "vuex";
 
 import Scroll from "@/components/common/scroll/Scroll";
+import { throttle } from "@/assets/js/utils";
 
 import Vue from "vue";
 import { Toast } from "vant";
@@ -129,8 +131,9 @@ export default {
       singer: null,
       singerInfo: null,
       singerInfoDetail: null,
-      listInfo: null,
-      searchHistory: []
+      listInfo: [],
+      searchHistory: [],
+      curPage: -1
     };
   },
   created() {
@@ -138,21 +141,25 @@ export default {
     this.searchHistory = JSON.parse(list) || [];
   },
   methods: {
-    search() {
+    search(curPage, isFirst) {
       this.singerInfoDetail = null;
       this.singerInfo = null;
       if (!this.keyword) {
         Toast("请输入歌手名或歌曲名");
         return;
       }
-      this.searchHistory.push(this.keyword);
-      window.sessionStorage.setItem(
-        "searchHistory",
-        JSON.stringify(this.searchHistory)
-      );
-      searchApi.search("song", this.keyword).then(res => {
+      //不存在时才加上
+      if (this.searchHistory.indexOf(this.keyword) === -1) {
+        this.searchHistory.push(this.keyword);
+        window.sessionStorage.setItem(
+          "searchHistory",
+          JSON.stringify(this.searchHistory)
+        );
+      }
+      searchApi.search("song", this.keyword, curPage + 1).then(res => {
         if (res.data.list.length === 0) {
           this.error = true;
+          Toast.fail("没有更多内容咯");
           return;
         }
         // 歌手信息注入
@@ -168,18 +175,26 @@ export default {
           });
         }
         // 歌曲列表注入
-        this.listInfo = res.data.list.map(item => {
+        let listInfo1 = res.data.list.map(item => {
           return {
             name: item.songname,
             singer: item.singer[0].name,
             id: item.songmid
           };
         });
+        if (curPage > 0) {
+          this.listInfo = this.listInfo.concat(listInfo1);
+        } else {
+          this.listInfo = listInfo1;
+        }
+        isFirst ? (this.curPage = 0) : this.curPage++;
+        //this.curPage = Math.ceil(this.listInfo.length / 30);
       });
     },
     searchForHistory(keywords) {
       this.singerInfoDetail = null;
       this.singerInfo = null;
+      this.keyword = keywords;
       searchApi.search("song", keywords).then(res => {
         if (res.data.list.length === 0) {
           this.error = true;
@@ -205,6 +220,7 @@ export default {
             id: item.songmid
           };
         });
+        this.curPage++;
       });
     },
     deleteItem(index) {
@@ -220,6 +236,15 @@ export default {
         "searchHistory",
         JSON.stringify(this.searchHistory)
       );
+    },
+    loadMore() {
+      console.log(1);
+      let that = this;
+      throttle(that.search(that.curPage, false), 1000);
+      this.$nextTick(() => {
+        this.$refs.scroll.refresh(); // DOM 结构发生变化后，重新初始化BScroll
+        this.$refs.scroll.finishPullUp(); // 上拉加载动作完成后调用此方法告诉BScroll完成一次上拉动作
+      });
     },
     liClick(index) {
       this.startPlayingMusic({ index, list: this.listInfo });
@@ -273,7 +298,6 @@ header {
 }
 .list {
   background: var(--background-color);
-  margin-bottom: 0.6rem;
   .singer {
     display: flex;
     flex-flow: column;
@@ -317,6 +341,12 @@ header {
       .singer_li {
         font-size: var(--normal);
         color: var(--text-info);
+      }
+      .name_li {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .musicLogo {
         position: absolute;
