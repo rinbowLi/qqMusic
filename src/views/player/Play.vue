@@ -49,7 +49,7 @@
             </div>
           </div>
           <div class="right">
-            <i class="iconfont icon-xiai" />
+            <i class="iconfont icon-xiai" @click="addToFavList()" />
             <a v-if="src&&songInfo" :href="src" target="_blank">
               <i class="iconfont icon-xiazai" />
             </a>
@@ -238,6 +238,10 @@ export default {
     this.player = this.$refs.audio;
   },
   methods: {
+    addToFavList() {
+      let song = this.songInfo;
+      this.setFavList(song);
+    },
     changeMusicStatus() {
       let player = this.player;
       let currentIndex = this.$store.state.playStatusList.findIndex(
@@ -294,7 +298,8 @@ export default {
       setFullScreen: "SET_FULL_SCREEN",
       setCurrentIndex: "SET_CURRENT_INDEX",
       delCurrentIndex: "DeL_CURRENT_INDEX",
-      changePlayStatus: "Change_Play_Status"
+      changePlayStatus: "Change_Play_Status",
+      setFavList: "SET_FAVLIST"
     }),
     changeIndex(flag) {
       this.setCurrentIndex(this.$store.state.currentIndex + flag);
@@ -662,7 +667,7 @@ export default {
     color: white;
     text-align: center;
     line-height: 0.4rem;
-    background-color: rgba(129,86,232, 0.21);
+    background-color: rgba(129, 86, 232, 0.21);
   }
 }
 </style>

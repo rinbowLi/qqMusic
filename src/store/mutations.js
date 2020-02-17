@@ -5,7 +5,8 @@ export const type = {
   SET_CURRENT_INDEX: "SET_CURRENT_INDEX",
   DeL_CURRENT_INDEX: "DeL_CURRENT_INDEX",
   Change_Play_Status: "Change_Play_Status", //切换播放模式
-  Set_Play_Status: "Set_Play_Status" //切换播放模式
+  Set_Play_Status: "Set_Play_Status", //切换播放模式
+  SET_FAVLIST:"SET_FAVLIST"
 };
 
 
@@ -56,8 +57,12 @@ export const mutations = {
     }
   },
   [type.Set_Play_Status](state, status) {
-    state.playStatus = status
+    state.playStatus = status;
+  },
+  [type.SET_FAVLIST](state,song){
+    state.favlist.push(song);
   }
+
 };
 
 
