@@ -2,18 +2,13 @@
   <div class="hotList">
     <h3>热门歌单</h3>
     <div class="ulWrapper">
-      <!-- <ul class="listView" v-if="listItems">
-        <li v-for="item in listItems" :key="item.id">
-          <HotSongItem :itemInfo="item" />
-        </li>
-      </ul>-->
       <van-grid :border="false" :column-num="3" class="listView">
-        <van-grid-item v-for="item in listItems1" :key="item.id" class="listViewItem">
+        <van-grid-item v-for="item in listItems1" :key="item.dissid" class="listViewItem">
           <HotSongItem :itemInfo="item" />
         </van-grid-item>
       </van-grid>
       <van-grid :border="false" :column-num="3" class="listView">
-        <van-grid-item v-for="item in listItems2" :key="item.id" class="listViewItem">
+        <van-grid-item v-for="item in listItems2" :key="item.dissid" class="listViewItem">
           <HotSongItem :itemInfo="item" />
         </van-grid-item>
       </van-grid>
@@ -38,7 +33,7 @@ export default {
       listItems: [
         {
           dissname: "周杰伦专场",
-          dissid: 7143084629,
+          dissid: "7143084629",
           imgurl:
             "http://y.gtimg.cn/music/photo_new/T002R300x300M000003RMaRI1iFoYd.jpg?n=1"
         }

@@ -5,7 +5,7 @@
       <RankListItem
         class="listItem"
         v-for="item in listInfo"
-        :key="item.id"
+        :key="item.code"
         :itemInfo="item"
         @click.native="$router.push(`/rankList/${item.code}`)"
       />

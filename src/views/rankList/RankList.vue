@@ -16,7 +16,7 @@
         <span>共{{listInfo.length}}首</span>
       </h3>
       <ul>
-        <li v-for="(item,index) in listInfo" @click="liClick(index)" :key="index">
+        <li v-for="(item,index) in listInfo" @click="liClick(index)" :key="item.id">
           <div class="left">{{index+1}}</div>
           <div class="right">
             <p class="title nowrap">{{item.title}}</p>

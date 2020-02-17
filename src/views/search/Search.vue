@@ -46,7 +46,7 @@
         v-if="listInfo.length>0"
       >
         <ul class="songList" v-if="listInfo">
-          <li v-for="(item,index) in listInfo" @click="liClick(index)" :key="index">
+          <li v-for="(item,index) in listInfo" @click="liClick(index)" :key="item.id">
             <div class="musicLogo">
               <i class="iconfont icon-yinle" />
             </div>

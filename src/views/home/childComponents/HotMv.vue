@@ -2,7 +2,7 @@
     <div class="hotMv">
         <h3>热门MV</h3>
         <ul v-if="listItems">
-            <li v-for="item in listItems"  :key="item.id">
+            <li v-for="item in listItems"  :key="item.vid">
                 <HotMvItem :item-info="item"/>
             </li>
         </ul>

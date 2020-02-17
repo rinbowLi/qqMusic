@@ -163,7 +163,7 @@
           <span>({{$store.state.playlist.length}}首)</span>
         </h3>
         <ul>
-          <li v-for="(item,index) in $store.state.playlist" :key="index">
+          <li v-for="(item,index) in $store.state.playlist" :key="item.id">
             <div class="info" @click="setCurrentIndex(index)">
               <i v-if="index===$store.state.currentIndex" class="iconfont icon-yinle" />
               <span class="name">{{item.name}}</span>

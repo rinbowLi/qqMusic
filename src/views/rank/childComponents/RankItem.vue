@@ -3,7 +3,7 @@
     <div class="left">
       <h3 class="title">{{itemInfo.name}}</h3>
       <ul>
-        <li class="nowrap" v-for="(item,index) in itemInfo.data" :key="index">
+        <li class="nowrap" v-for="(item,index) in itemInfo.data" :key="item.id">
           <span class="index">{{index+1}}.</span>
           {{item.name}}-
           <span class="name">{{item.singer[0].name}}</span>
