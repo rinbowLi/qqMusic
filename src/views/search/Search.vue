@@ -20,8 +20,8 @@
           />
         </svg>
         <i class="iconfont icon-icon-test"></i>
-        <input placeholder="请输入歌手名或歌曲名" v-model="keyword" @keyup.enter="search(-1,true)" />
-        <div class="searchText" @click="search(-1,true)">搜索</div>
+        <input placeholder="请输入歌手名或歌曲名" v-model="keyword" @keyup.enter="search(-1)" />
+        <div class="searchText" @click="search(-1)">搜索</div>
       </div>
     </header>
     <div class="list" v-if="listInfo.length>0">
@@ -46,7 +46,7 @@
         v-if="listInfo.length>0"
       >
         <ul class="songList" v-if="listInfo">
-          <li v-for="(item,index) in listInfo" @click="liClick(index)" :key="item.id">
+          <li v-for="(item,index) in listInfo" @click="liClick(index)" :key="item.id + index">
             <div class="musicLogo">
               <i class="iconfont icon-yinle" />
             </div>
@@ -141,7 +141,7 @@ export default {
     this.searchHistory = JSON.parse(list) || [];
   },
   methods: {
-    search(curPage, isFirst) {
+    search(curPage) {
       this.singerInfoDetail = null;
       this.singerInfo = null;
       if (!this.keyword) {
@@ -182,13 +182,12 @@ export default {
             id: item.songmid
           };
         });
-        if (curPage > 0) {
-          this.listInfo = this.listInfo.concat(listInfo1);
-        } else {
-          this.listInfo = listInfo1;
-        }
-        isFirst ? (this.curPage = 0) : this.curPage++;
-        //this.curPage = Math.ceil(this.listInfo.length / 30);
+        this.listInfo = [...this.listInfo, ...listInfo1];
+        this.curPage++;
+
+        this.$nextTick(() => {
+          this.$refs.scroll.finishPullUp(); // 上拉加载动作完成后调用此方法告诉BScroll完成一次上拉动作
+        });
       });
     },
     searchForHistory(keywords) {
@@ -239,11 +238,9 @@ export default {
     },
     loadMore() {
       let that = this;
-      throttle(that.search(that.curPage, false), 1000);
-      this.$nextTick(() => {
-        this.$refs.scroll.refresh(); // DOM 结构发生变化后，重新初始化BScroll
-        this.$refs.scroll.finishPullUp(); // 上拉加载动作完成后调用此方法告诉BScroll完成一次上拉动作
-      });
+      const search = throttle(that.search, 1000);
+      search(that.curPage);
+      this.$refs.scroll.refresh(); // DOM 结构发生变化后，重新初始化BScroll
     },
     liClick(index) {
       this.startPlayingMusic({ index, list: this.listInfo });
