@@ -665,7 +665,7 @@ export default {
     top: 0;
     bottom: 0;
     background: transparent;
-    z-index: 10;
+    z-index: 12;
   }
   div.content {
     border-top-left-radius: 0.08rem;
@@ -676,7 +676,7 @@ export default {
     right: 0;
     background: var(--background-color-light);
     width: 100%;
-    z-index: 11;
+    z-index: 13;
     box-shadow: 0 -3px 10px rgba(96, 115, 255, 0.32);
   }
   h3 {
