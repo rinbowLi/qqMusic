@@ -113,7 +113,7 @@ export default {
     right: 0;
   }
   .rankItem {
-    margin: 0.48rem 0 0.6rem 0;
+    margin: 0.48rem 0 0;
   }
   .listItem {
     margin-top: 0.1rem;

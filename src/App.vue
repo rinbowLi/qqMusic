@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view />
+    <keep-alive exclude="Mv,TopList,SongList">
+      <router-view />
+    </keep-alive>
     <play v-if="!idMvList" />
   </div>
 </template>
