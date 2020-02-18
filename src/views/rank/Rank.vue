@@ -94,7 +94,6 @@ export default {
     },
     dataInject(obj) {
       listApi.getTopList(obj.code).then(res => {
-        console.log(res);
         this.$set(obj, "data", res.data.splice(0, 3));
       });
     }

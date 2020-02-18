@@ -104,7 +104,6 @@ export default {
   methods: {
     init() {
       let listId = this.$route.params.id;
-      console.log(listId);
       let index = this.metaData.findIndex(
         item => item.code === parseInt(listId)
       );

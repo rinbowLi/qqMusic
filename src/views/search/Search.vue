@@ -238,7 +238,6 @@ export default {
       );
     },
     loadMore() {
-      console.log(1);
       let that = this;
       throttle(that.search(that.curPage, false), 1000);
       this.$nextTick(() => {

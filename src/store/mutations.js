@@ -6,7 +6,10 @@ export const type = {
   DeL_CURRENT_INDEX: "DeL_CURRENT_INDEX",
   Change_Play_Status: "Change_Play_Status", //切换播放模式
   Set_Play_Status: "Set_Play_Status", //切换播放模式
-  SET_FAVLIST:"SET_FAVLIST"
+  SET_FAVLIST: "SET_FAVLIST",
+  REMOVE_TO_FAVLIST: "REMOVE_TO_FAVLIST",
+  SET_FAVALBUMLIST: "SET_FAVALBUMLIST",
+  REMOVE_TO_FAVALBUMLIST: "REMOVE_TO_FAVALBUMLIST",
 };
 
 
@@ -59,9 +62,20 @@ export const mutations = {
   [type.Set_Play_Status](state, status) {
     state.playStatus = status;
   },
-  [type.SET_FAVLIST](state,song){
+  [type.SET_FAVLIST](state, song) {
     state.favlist.push(song);
-  }
+  },
+  [type.REMOVE_TO_FAVLIST](state, song) {
+    let index = state.favlist.findIndex(item => item.mid === song.mid);
+    state.favlist.splice(index, 1);
+  },
+  [type.SET_FAVALBUMLIST](state, song) {
+    state.favAlbumlist.push(song);
+  },
+  [type.REMOVE_TO_FAVALBUMLIST](state, song) {
+    let index = state.favAlbumlist.findIndex(item => item.disstid === song.disstid);
+    state.favAlbumlist.splice(index, 1);
+  },
 
 };
 

@@ -29,8 +29,8 @@ export default new Vuex.Store({
 
     currentIndex: -1,
 
-    favlist: [],
-
+    favlist: [],  //我喜欢的歌
+    favAlbumlist: [],  //我喜欢的专辑，歌单
     playStatus: "normal", //当前播放状态，顺序，单曲，随机
     playStatusList: ["normal", "loop", "random"], //列表循环，单曲循环，随机播放
 

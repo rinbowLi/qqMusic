@@ -55,7 +55,16 @@
     </div>
 
     <div class="favAlbum" v-else>
-      <div class="noAlbum">
+      <div class="list" v-if="$store.state.favAlbumlist.length>0">
+        <FavAblumItem
+          class="listItem"
+          v-for=" item in $store.state.favAlbumlist"
+          :itemInfo="item"
+          :key="item.disstid"
+          @click.native="$router.push(`/list/${item.disstid}`)"
+        />
+      </div>
+      <div class="noAlbum" v-else>
         <div class="svgBox">
           <svg
             t="1581936065029"
@@ -83,10 +92,14 @@
 <script>
 import Header2 from "@/components/content/header/Header2";
 
+import FavAblumItem from "./childComponents/FavAblumItem";
+import { mapActions } from "vuex";
+
 export default {
   name: "fav",
   components: {
-    Header2
+    Header2,
+    FavAblumItem
   },
   data() {
     return {
@@ -97,11 +110,14 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      startPlayingMusic: "startPlayingMusic"
+    }),
     changeIndex(index) {
       this.navInfo.activeIndex = index;
     },
     liClick(index) {
-      let list = this.listInfo.map(item => {
+      let list = this.$store.state.favlist.map(item => {
         return { name: item.name, singer: item.singer[0].name, id: item.mid };
       });
       this.startPlayingMusic({ list, index });
@@ -117,7 +133,7 @@ export default {
     position: absolute;
     left: 0.15rem;
     top: 0.12rem;
-    z-index: 20;
+    z-index: 11;
   }
   .favSong {
     width: 100%;
@@ -197,6 +213,12 @@ export default {
         color: #999999;
       }
     }
+  }
+  .list{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
   }
 }
 </style>

@@ -1,5 +1,10 @@
 <template>
-  <div class="topList clear" :style="{'bottom':$store.state.playlist.length>0?'0.6rem':'0'}" ref="test" @scroll="scroll($event)">
+  <div
+    class="topList clear"
+    :style="{'bottom':$store.state.playlist.length>0?'0.6rem':'0'}"
+    ref="test"
+    @scroll="scroll($event)"
+  >
     <div class="back" :style="style">
       <span class="back" @click="$router.back()">
         <i class="iconfont icon-fanhui" />返回
@@ -9,6 +14,42 @@
 
     <div class="header clear" v-if="sectionInfo">
       <img v-lazy="sectionInfo.logo" alt />
+      <svg
+        t="1581989706629"
+        class="icon"
+        viewBox="0 0 1024 1024"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        p-id="919"
+        width="30"
+        height="30"
+        @click="addToFavAlbumlist()"
+        v-if="!isFav"
+      >
+        <path
+          d="M833.1 244.9c-73.2-73.2-193-73.2-266.1 0l-55.9 55.9-54-54c-73.2-73.2-193-73.2-266.1 0-36.6 36.6-54.9 84.8-54.9 133.1S154.4 476.4 191 513l321 321 321.1-323c73.2-73.2 73.2-193 0-266.1z m-45.3 220.9l-276 277.6-275.6-275.8c-23.3-23.3-36.1-54.5-36.1-87.8s12.8-64.5 36.1-87.8 54.5-36.2 87.8-36.2 64.5 12.8 87.8 36.2l99.3 99.3 101.2-101.1c23.3-23.3 54.5-36.2 87.8-36.2s64.5 12.8 87.8 36.2c23.3 23.3 36.1 54.5 36.1 87.8s-12.8 64.4-36.2 87.8z"
+          p-id="920"
+          fill="#ffffff"
+        />
+      </svg>
+      <svg
+        t="1581989726607"
+        class="icon"
+        viewBox="0 0 1024 1024"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        p-id="1117"
+        width="30"
+        height="30"
+        @click="removeToFavAlbumlist()"
+        v-else
+      >
+        <path
+          d="M833.1 244.9c-73.2-73.2-193-73.2-266.1 0l-55.9 55.9-54-54c-73.2-73.2-193-73.2-266.1 0-73.2 73.2-73.2 193 0 266.1L512 834l321.1-323c73.2-73.2 73.2-193 0-266.1z"
+          p-id="1118"
+          fill="#FF4040"
+        />
+      </svg>
     </div>
     <div class="list">
       <h3>
@@ -30,7 +71,13 @@
 
 <script>
 import { listApi } from "@/api/list";
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
+
+import Vue from "vue";
+import { Toast } from "vant";
+
+Vue.use(Toast);
+
 export default {
   name: "SongList",
   data() {
@@ -38,7 +85,7 @@ export default {
       pic: null,
       listInfo: [],
       opacity: 0,
-      sectionInfo: null
+      sectionInfo: {}
     };
   },
   computed: {
@@ -46,6 +93,13 @@ export default {
       return {
         background: `rgba(129,86,232,${this.opacity})`
       };
+    },
+    isFav() {
+      let id = this.sectionInfo.disstid;
+      return (
+        this.$store.state.favAlbumlist.filter(item => item.disstid === id)
+          .length > 0
+      );
     }
   },
   created() {
@@ -55,6 +109,10 @@ export default {
   methods: {
     ...mapActions({
       startPlayingMusic: "startPlayingMusic"
+    }),
+    ...mapMutations({
+      setFavAlbumlist: "SET_FAVALBUMLIST",
+      removeFavAlbumlist: "REMOVE_TO_FAVALBUMLIST"
     }),
     init() {
       let listId = this.$route.params.id;
@@ -72,6 +130,16 @@ export default {
         return { name: item.name, singer: item.singer[0].name, id: item.mid };
       });
       this.startPlayingMusic({ list, index });
+    },
+    addToFavAlbumlist() {
+      let album = this.sectionInfo;
+      Toast.success("已添加到我喜欢");
+      this.setFavAlbumlist(album);
+    },
+    removeToFavAlbumlist() {
+      let album = this.sectionInfo;
+      Toast.success("已从我喜欢移除");
+      this.removeFavAlbumlist(album);
     }
   }
 };
@@ -119,10 +187,16 @@ export default {
   .header {
     background: #000;
     opacity: 0.5;
+    position: relative;
 
     img {
       width: 3rem;
       margin: 0.4rem auto;
+    }
+    svg {
+      position: absolute;
+      bottom: 0.1rem;
+      right: 0.15rem;
     }
   }
 
