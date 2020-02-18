@@ -26,6 +26,13 @@ npm run serve
 ![搜索页面截图](https://github.com/1165973875/qqMusic/blob/master/markDownImg/搜索页面截图.png)
 ![搜索页面截图2](https://github.com/1165973875/qqMusic/blob/master/markDownImg/搜索页面截图2.png)
 
+## 我喜欢页面截图
+
+![我喜欢页面截图](https://github.com/1165973875/qqMusic/blob/master/markDownImg/%E6%88%91%E5%96%9C%E6%AC%A2%E9%A1%B5%E9%9D%A2%E6%88%AA%E5%9B%BE1.jpg)
+![我喜欢页面截图2](https://github.com/1165973875/qqMusic/blob/master/markDownImg/%E6%88%91%E5%96%9C%E6%AC%A2%E9%A1%B5%E9%9D%A2%E6%88%AA%E5%9B%BE2.jpg)
+![我喜欢页面截图3](https://github.com/1165973875/qqMusic/blob/master/markDownImg/%E6%88%91%E5%96%9C%E6%AC%A2%E9%A1%B5%E9%9D%A2%E6%88%AA%E5%9B%BE3.jpg)
+![我喜欢页面截图4](https://github.com/1165973875/qqMusic/blob/master/markDownImg/%E6%88%91%E5%96%9C%E6%AC%A2%E9%A1%B5%E9%9D%A2%E6%88%AA%E5%9B%BE4.jpg)
+
 ##  待续
 项目还在写，后续会更新。。
 
