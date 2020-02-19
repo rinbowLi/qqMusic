@@ -78,6 +78,6 @@ export default {
   top: 0.94rem;
 }
 .active {
-  height: calc(100vh - 0.94rem - 0.6rem);
+  height: calc(100vh - 0.94rem - 0.64rem);
 }
 </style>

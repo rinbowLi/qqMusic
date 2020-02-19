@@ -19,7 +19,11 @@
     </svg>
     <Header2 :navInfo="navInfo" @changeIndex="changeIndex" />
 
-    <div class="favSong" v-if="navInfo.activeIndex===0">
+    <div
+      class="favSong"
+      v-if="navInfo.activeIndex===0"
+      :class="{active:$store.state.playlist.length>0}"
+    >
       <div class="list" v-if="$store.state.favlist.length>0">
         <ul>
           <li v-for="(item,index) in $store.state.favlist" @click="liClick(index)" :key="item.id">
@@ -54,7 +58,7 @@
       </div>
     </div>
 
-    <div class="favAlbum" v-else>
+    <div class="favAlbum" v-else :style="{'bottom':$store.state.playlist.length>0?'0.64rem':'0'}">
       <div class="list" v-if="$store.state.favAlbumlist.length>0">
         <FavAblumItem
           class="listItem"
@@ -130,7 +134,7 @@ export default {
 .fav {
   position: relative;
   .back {
-    position: absolute;
+    position: fixed;
     left: 0.15rem;
     top: 0.12rem;
     z-index: 11;
@@ -138,7 +142,7 @@ export default {
   .favSong {
     width: 100%;
     position: relative;
-    top: .47rem;
+    top: 0.47rem;
     .noSong {
       width: 100%;
       height: 100vh;
@@ -190,35 +194,38 @@ export default {
       }
     }
   }
-}
-.favAlbum {
-  width: 100%;
-  top: 0.47rem;
-  position: relative;
-  .noAlbum {
+  .active {
+    margin-bottom: 0.64rem;
+  }
+  .favAlbum {
     width: 100%;
-    height: 100vh;
-    .svgBox {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      svg {
-        height: 1rem;
-        width: 1rem;
-      }
-      div {
-        height: 0.2rem;
-        margin-top: 0.1rem;
-        color: #999999;
+    top: 0.47rem;
+    position: relative;
+    .noAlbum {
+      width: 100%;
+      height: 100vh;
+      .svgBox {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        svg {
+          height: 1rem;
+          width: 1rem;
+        }
+        div {
+          height: 0.2rem;
+          margin-top: 0.1rem;
+          color: #999999;
+        }
       }
     }
-  }
-  .list{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    .list {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
   }
 }
 </style>

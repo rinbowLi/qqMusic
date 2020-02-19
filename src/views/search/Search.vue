@@ -20,7 +20,12 @@
           />
         </svg>
         <i class="iconfont icon-icon-test"></i>
-        <input placeholder="请输入歌手名或歌曲名" v-model="keyword" ref="searchInput" @keyup.enter="search(-1)" />
+        <input
+          placeholder="请输入歌手名或歌曲名"
+          v-model="keyword"
+          ref="searchInput"
+          @keyup.enter="search(-1)"
+        />
         <div class="searchText" @click="search(-1)">搜索</div>
       </div>
     </header>
@@ -42,7 +47,7 @@
         :probeType="3"
         :pullUpLoad="true"
         @pullingUp="loadMore"
-        :style="{'top':singerInfoDetail?'1rem':'.5rem'}"
+        :style="{'top':singerInfoDetail?'1rem':'.5rem','bottom':$store.state.playlist.length>0?'0.64rem':'0'}"
         v-if="listInfo.length>0"
       >
         <ul class="songList" v-if="listInfo">
@@ -140,8 +145,8 @@ export default {
     const list = window.sessionStorage.getItem("searchHistory");
     this.searchHistory = JSON.parse(list) || [];
   },
-  mounted(){
-   this.$refs.searchInput.focus();
+  mounted() {
+    this.$refs.searchInput.focus();
   },
   methods: {
     search(curPage) {
@@ -326,7 +331,6 @@ header {
     top: 1rem;
     left: 0;
     right: 0;
-    bottom: 0.6rem;
   }
   .songList {
     padding: 0 0.1rem;

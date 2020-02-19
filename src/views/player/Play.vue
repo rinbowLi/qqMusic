@@ -1,6 +1,12 @@
 <template>
   <div id="player" @touchmove.stop v-show="$store.state.playlist.length>0">
     <div id="miniPlayer" v-show="!$store.state.fullscreen">
+      <StaticProgressBar
+        :percent="percent"
+        @percentChange="percentChange"
+        @percentChangeEnd="percentChangeEnd"
+        class="staticProgressBar"
+      />
       <div class="left" @click="setFullScreen(true)">
         <img v-if="player" v-lazy="songPic" :class="{active: !player.paused}" alt />
       </div>
@@ -232,7 +238,8 @@
 </template>
 
 <script>
-import ProgressBar from "@/components/common/ProgressBar";
+import ProgressBar from "@/components/common/progressBar/ProgressBar";
+import StaticProgressBar from "@/components/common/progressBar/StaticProgressBar";
 import { mapMutations } from "vuex";
 import { songApi } from "@/api/song";
 
@@ -243,7 +250,7 @@ Vue.use(Toast);
 
 export default {
   name: "Player",
-  components: { ProgressBar },
+  components: { ProgressBar, StaticProgressBar },
   data() {
     return {
       percent: 0,
@@ -287,7 +294,7 @@ export default {
     },
     removeToFavList() {
       let song = this.songInfo;
-       Toast.success("已从我喜欢移除");
+      Toast.success("已从我喜欢移除");
       this.removeFavListItem(song);
     },
     changeMusicStatus() {
@@ -425,6 +432,13 @@ export default {
   height: 0.6rem;
   background: var(--background-color);
   display: flex;
+  .staticProgressBar {
+    position: absolute;
+    width: 100%;
+    height: 0.04rem;
+    top: 0;
+    left: 0;
+  }
   .left {
     width: 20%;
     height: 100%;
