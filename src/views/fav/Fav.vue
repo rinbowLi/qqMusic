@@ -138,6 +138,7 @@ export default {
   .favSong {
     width: 100%;
     position: relative;
+    top: .47rem;
     .noSong {
       width: 100%;
       height: 100vh;
