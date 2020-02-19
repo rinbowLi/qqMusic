@@ -8,8 +8,8 @@
         @touchstart.prevent="handleTouchStart"
         @touchmove.prevent="handleTouchMove"
         @touchend.prevent="handleTouchEnd"
-      > -->
-        <!-- <div class="progressBtn"></div> -->
+      >-->
+      <!-- <div class="progressBtn"></div> -->
       <!-- </div> -->
     </div>
   </div>
@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     init() {
-      this.barPercentWidth = innerWidth;  //这里是全屏横向展示的，所以bar总宽度等于视口宽度。
+      this.barPercentWidth = innerWidth; //这里是全屏横向展示的，所以bar总宽度等于视口宽度。
     },
     handleTouchStart(e) {
       this.touch.onTouch = true;
@@ -85,13 +85,13 @@ export default {
   .wrapper {
     position: relative;
     height: 0.04rem;
-    background: rgb(129, 86, 232);
+    background: rgba(0, 0, 0, 0.3);
 
     .progress {
       position: absolute;
       left: 0;
       height: 100%;
-      background: rgb(216, 255, 75);
+      background: rgb(129, 86, 232);
     }
 
     // .progressBtnWrapper {

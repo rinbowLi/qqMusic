@@ -88,13 +88,13 @@ export default {
     position: relative;
     top: 0.13rem;
     height: 0.04rem;
-    background: rgba(129, 86, 232, 0.3);
+    background: rgba(0, 0, 0, 0.3);
 
     .progress {
       position: absolute;
       left: 0;
       height: 100%;
-      background: rgb(216, 255, 75);
+      background: rgb(129, 86, 232);
     }
 
     .progressBtnWrapper {
