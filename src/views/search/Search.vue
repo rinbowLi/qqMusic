@@ -20,7 +20,7 @@
           />
         </svg>
         <i class="iconfont icon-icon-test"></i>
-        <input placeholder="请输入歌手名或歌曲名" v-model="keyword" @keyup.enter="search(-1)" />
+        <input placeholder="请输入歌手名或歌曲名" v-model="keyword" ref="searchInput" @keyup.enter="search(-1)" />
         <div class="searchText" @click="search(-1)">搜索</div>
       </div>
     </header>
@@ -139,6 +139,9 @@ export default {
   created() {
     const list = window.sessionStorage.getItem("searchHistory");
     this.searchHistory = JSON.parse(list) || [];
+  },
+  mounted(){
+   this.$refs.searchInput.focus();
   },
   methods: {
     search(curPage) {

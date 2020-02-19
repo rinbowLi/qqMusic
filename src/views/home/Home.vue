@@ -1,5 +1,7 @@
-<template>
+<template comments>
+  <!-- 这是一个测试备注 -->
   <div class="home">
+    <!-- 这是一个测试备注 -->
     <Header :navInfo="navInfo" />
     <SearchBar @click.native="gotoSearch"></SearchBar>
     <Scroll
@@ -13,6 +15,7 @@
         <HotMv />
       </section>
     </Scroll>
+    <!-- 这是一个测试备注 -->
   </div>
 </template>
 
@@ -27,6 +30,7 @@ import HotMv from "./childComponents/HotMv";
 import { debounce } from "@/assets/js/utils";
 
 export default {
+  //comments: true,
   name: "Home",
   components: {
     Header,
@@ -57,8 +61,8 @@ export default {
     };
     this.$bus.$on("itemImgLoad", this.itemIamgeFunc);
   },
-  methods:{
-    gotoSearch(){
+  methods: {
+    gotoSearch() {
       this.$router.push("/search");
     }
   }
