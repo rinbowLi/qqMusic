@@ -36,7 +36,7 @@
           </div>
         </div>
       </div>
-      <div class="center" v-if="!showLyric">
+      <div class="center" v-show="!showLyric">
         <img v-lazy="songPic" alt v-if="songPic" @click="showLyric=!showLyric" />
         <div class="infos" v-if="songInfo">
           <div class="left">
@@ -99,13 +99,36 @@
           </div>
         </div>
       </div>
-      <div class="center2" v-else @click="showLyric=!showLyric">
-        <div class="lyric">暂无歌词</div>
+
+      <div class="center2" v-show="showLyric" @click="showLyric=!showLyric">
+        <!-- <div class="lyric">暂无歌词</div> -->
+        <!-- 歌词 -->
+        <BScroll
+          class="lyric"
+          ref="lyricList"
+          v-show="showLyric"
+          :data="currentLyric && currentLyric.lines"
+        >
+          <div class="lyric-wrapper">
+            <div class="currentLyric" v-if="currentLyric">
+              <p
+                ref="lyricLine"
+                class="text"
+                :class="{'current': currentLineNum === index}"
+                v-for="(line, index) in currentLyric.lines"
+                :key="line.key"
+              >{{line.txt}}</p>
+            </div>
+            <p class="no-lyric" v-if="currentLyric===null">暂无歌词</p>
+          </div>
+        </BScroll>
       </div>
+
       <div class="bottom">
         <audio
           autoplay
           ref="audio"
+          id="audio"
           :src="src"
           @ended="end"
           @canplay="canPlay"
@@ -240,17 +263,20 @@
 <script>
 import ProgressBar from "@/components/common/progressBar/ProgressBar";
 import StaticProgressBar from "@/components/common/progressBar/StaticProgressBar";
-import { mapMutations } from "vuex";
+import BScroll from "@/components/common/scroll/BScroll";
+import { mapMutations, mapGetters } from "vuex";
 import { songApi } from "@/api/song";
+import { lyricApi } from "@/api/lyric";
 
 import Vue from "vue";
+import Lyric from "lyric-parser";
 import { Toast } from "vant";
 
 Vue.use(Toast);
 
 export default {
   name: "Player",
-  components: { ProgressBar, StaticProgressBar },
+  components: { ProgressBar, StaticProgressBar, BScroll },
   data() {
     return {
       percent: 0,
@@ -261,8 +287,24 @@ export default {
       songInfo: null,
       songPic: null,
       showList: false,
-      showLyric: false
+      showLyric: false,
+      currentLyric: null,
+      currentLineNum: 0,
+      playingLyric: "",
+      noLyric: false
     };
+  },
+  watch: {
+    //监听currentIndex的变化，有变化马上获取歌词渲染
+    "$store.state.currentIndex": {
+      handler(newVal, oldVal) {
+        //console.log("改变", newVal, oldVal);
+        this.getLyric(
+          this.$store.state.playlist[this.$store.state.currentIndex].id
+        );
+      },
+      immediate: false //首次不执行
+    }
   },
   computed: {
     src() {
@@ -282,6 +324,16 @@ export default {
         this.$store.state.favlist.filter(item => item.mid === id).length > 0
       );
     }
+  },
+  created() {
+    console.log(1)
+    this.$nextTick(() => {
+      if (this.$store.state.currentIndex > -1) {
+        this.getLyric(
+          this.$store.state.playlist[this.$store.state.currentIndex].id
+        );
+      }
+    });
   },
   mounted() {
     this.player = this.$refs.audio;
@@ -319,6 +371,9 @@ export default {
     percentChange(percent) {
       this.onMove = true;
       this.currentTime = percent * this.duration;
+      if (this.currentLyric) {
+        this.currentLyric.seek(this.currentTime * 1000);
+      }
     },
     percentChangeEnd(percent) {
       this.onMove = false;
@@ -366,10 +421,47 @@ export default {
       } else {
         this.player.pause();
       }
+      if (this.currentLyric) {
+        this.currentLyric.togglePlay();
+      }
     },
-    ///////
     backClick() {
       this.setFullScreen(!this.$store.state.fullscreen);
+    },
+    getLyric(id) {
+      if (this.currentLyric) {
+        this.currentLyric.stop();
+        this.currentLyric = null;
+      }
+      this.noLyric = false;
+      lyricApi
+        .getLyric(id)
+        .then(res => {
+          //console.log(res);
+          this.currentLyric = new Lyric(res, this.handleLyric);
+          if (this.player.paused) {
+            this.currentLyric.play();
+            // 歌词重载以后 高亮行设置为 0
+            this.currentLineNum = 0;
+            this.$refs.lyricList.scrollTo(0, 0, 1000);
+          }
+        })
+        .catch(() => {
+          this.currentLyric = null;
+          this.noLyric = true;
+          this.currentLineNum = 0;
+        });
+    },
+    // 歌词滚动
+    handleLyric({ lineNum, txt }) {
+      //console.log(lineNum, txt);
+      this.currentLineNum = lineNum;
+      if (lineNum > 5) {
+        let lineEl = this.$refs.lyricLine[lineNum - 5];
+        this.$refs.lyricList.scrollToElement(lineEl, 1000);
+      } else {
+        this.$refs.lyricList.scrollTo(0, 0, 1000);
+      }
     }
   }
 };
@@ -598,12 +690,6 @@ export default {
     justify-content: center;
     align-items: center;
     height: 65%;
-    .lyric {
-      color: #ffffff;
-      width: 20%;
-      height: 0.3rem;
-      line-height: 0.3rem;
-    }
   }
   .bottom {
     height: 25%;
@@ -732,6 +818,36 @@ export default {
     text-align: center;
     line-height: 0.4rem;
     background-color: rgba(129, 86, 232, 0.21);
+  }
+}
+.lyric {
+  position: relative;
+  height: calc(100% - .51rem);
+  overflow: hidden;
+  z-index: 13;
+  transform: translateY(0.22rem);
+  width: 65%;
+}
+.lyric-wrapper {
+  width: 80%;
+  margin: 0 auto;
+  overflow: hidden;
+  text-align: center;
+  .text {
+    line-height: .44rem;
+    color: #ffffff;
+    font-size: .15rem;
+    &.current {
+      color: #8156e8;
+      font-size: .17rem;
+      font-weight: 600;
+    }
+  }
+  .no-lyric {
+    line-height: .44rem;
+    margin-top: 60%;
+    color: #ffffff;
+    font-size: .15rem;
   }
 }
 </style>

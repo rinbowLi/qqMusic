@@ -73,7 +73,6 @@ export default {
     },
     _emitPercent() {
       let percent = this.$refs.progress.clientWidth / this.barPercentWidth;
-       console.log(percent);
       this.$emit("percentChange", percent);
     }
   }
