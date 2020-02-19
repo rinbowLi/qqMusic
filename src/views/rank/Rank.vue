@@ -119,4 +119,7 @@ export default {
     margin-top: 0.1rem;
   }
 }
+.active {
+  margin-bottom: 0.6rem;
+}
 </style>
