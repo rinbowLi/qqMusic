@@ -33,6 +33,7 @@ export default new Vuex.Store({
     favAlbumlist: [], //我喜欢的专辑，歌单
     playStatus: "normal", //当前播放状态，顺序，单曲，随机
     playStatusList: ["normal", "loop", "random"], //列表循环，单曲循环，随机播放
+    curSingerPic:null
 
   },
   mutations,

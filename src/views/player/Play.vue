@@ -44,7 +44,7 @@
               {{songInfo.title}}
               <span class="mv" v-if="songInfo.mv.id!==0" @click="goMv">MV</span>
             </div>
-            <div class="singer">{{songInfo.singer[0].name}}</div>
+            <div class="singer" @click="gotoSinger">{{songInfo.singer[0].name}}</div>
             <div class="album">
               <span>专辑:</span>
               {{songInfo.album.name}}
@@ -326,7 +326,6 @@ export default {
     }
   },
   created() {
-    console.log(1)
     this.$nextTick(() => {
       if (this.$store.state.currentIndex > -1) {
         this.getLyric(
@@ -339,6 +338,11 @@ export default {
     this.player = this.$refs.audio;
   },
   methods: {
+    gotoSinger(){
+      this.$router.push({path:`/singer/${this.songInfo.singer[0].mid}`});
+      this.setFullScreen(false);
+      this.setCurSingerPic(this.songPic);
+    },
     addToFavList() {
       let song = this.songInfo;
       Toast.success("已添加到我喜欢");
@@ -410,7 +414,8 @@ export default {
       delCurrentIndex: "DeL_CURRENT_INDEX",
       changePlayStatus: "Change_Play_Status",
       setFavList: "SET_FAVLIST",
-      removeFavListItem: "REMOVE_TO_FAVLIST"
+      removeFavListItem: "REMOVE_TO_FAVLIST",
+      setCurSingerPic:"SET_CURSINGER_PIC"
     }),
     changeIndex(flag) {
       this.setCurrentIndex(this.$store.state.currentIndex + flag);

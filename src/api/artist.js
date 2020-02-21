@@ -58,5 +58,7 @@ let getArtistMv = function (id) {
 
 export const singerApi = {
   getArtistDetail,
-  getArtistSong
+  getArtistSong,
+  getArtistMv,
+  getArtistAlbum
 }

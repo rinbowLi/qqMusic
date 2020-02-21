@@ -10,6 +10,7 @@ export const type = {
   REMOVE_TO_FAVLIST: "REMOVE_TO_FAVLIST",
   SET_FAVALBUMLIST: "SET_FAVALBUMLIST",
   REMOVE_TO_FAVALBUMLIST: "REMOVE_TO_FAVALBUMLIST",
+  SET_CURSINGER_PIC: "SET_CURSINGER_PIC"
 };
 
 
@@ -76,6 +77,9 @@ export const mutations = {
     let index = state.favAlbumlist.findIndex(item => item.disstid === song.disstid);
     state.favAlbumlist.splice(index, 1);
   },
+  [type.SET_CURSINGER_PIC](state, img) {
+    state.curSingerPic = img;
+  }
 
 };
 

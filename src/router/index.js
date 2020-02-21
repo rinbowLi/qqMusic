@@ -46,6 +46,11 @@ const routes = [
     name: 'fav',
     component: () => import('../views/fav/Fav')
   },
+  {
+    path: '/singer/:id',
+    name: 'singer',
+    component: () => import('../views/singer/Singer')
+  },
 ]
 
 const router = new VueRouter({
