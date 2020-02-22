@@ -2,7 +2,7 @@
   <div class="topList clear" ref="test" :style="{'bottom':$store.state.playlist.length>0?'0.6rem':'0'}" @scroll="scroll($event)">
     <div class="back" :style="style">
       <span class="back" @click="$router.back()">
-        <i class="iconfont icon-fanhui" />返回
+        <i class="iconfont icon-flow" />返回
       </span>
       <div class="name" v-show="opacity>0.4">{{sectionInfo.name}}</div>
     </div>

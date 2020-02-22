@@ -7,49 +7,15 @@
   >
     <div class="back" :style="style">
       <span class="back" @click="$router.back()">
-        <i class="iconfont icon-fanhui" />返回
+        <i class="iconfont icon-flow" />返回
       </span>
       <div class="name nowrap" v-if="sectionInfo">{{sectionInfo.dissname}}</div>
     </div>
 
     <div class="header clear" v-if="sectionInfo">
       <img v-lazy="sectionInfo.logo" alt />
-      <svg
-        t="1581989706629"
-        class="icon"
-        viewBox="0 0 1024 1024"
-        version="1.1"
-        xmlns="http://www.w3.org/2000/svg"
-        p-id="919"
-        width="30"
-        height="30"
-        @click="addToFavAlbumlist()"
-        v-if="!isFav"
-      >
-        <path
-          d="M833.1 244.9c-73.2-73.2-193-73.2-266.1 0l-55.9 55.9-54-54c-73.2-73.2-193-73.2-266.1 0-36.6 36.6-54.9 84.8-54.9 133.1S154.4 476.4 191 513l321 321 321.1-323c73.2-73.2 73.2-193 0-266.1z m-45.3 220.9l-276 277.6-275.6-275.8c-23.3-23.3-36.1-54.5-36.1-87.8s12.8-64.5 36.1-87.8 54.5-36.2 87.8-36.2 64.5 12.8 87.8 36.2l99.3 99.3 101.2-101.1c23.3-23.3 54.5-36.2 87.8-36.2s64.5 12.8 87.8 36.2c23.3 23.3 36.1 54.5 36.1 87.8s-12.8 64.4-36.2 87.8z"
-          p-id="920"
-          fill="#ffffff"
-        />
-      </svg>
-      <svg
-        t="1581989726607"
-        class="icon"
-        viewBox="0 0 1024 1024"
-        version="1.1"
-        xmlns="http://www.w3.org/2000/svg"
-        p-id="1117"
-        width="30"
-        height="30"
-        @click="removeToFavAlbumlist()"
-        v-else
-      >
-        <path
-          d="M833.1 244.9c-73.2-73.2-193-73.2-266.1 0l-55.9 55.9-54-54c-73.2-73.2-193-73.2-266.1 0-73.2 73.2-73.2 193 0 266.1L512 834l321.1-323c73.2-73.2 73.2-193 0-266.1z"
-          p-id="1118"
-          fill="#FF4040"
-        />
-      </svg>
+      <i @click="addToFavAlbumlist()" v-if="!isFav" class="iconfont icon-aixin" />
+      <i @click="removeToFavAlbumlist()" v-else class="iconfont icon-aixin1" />
     </div>
     <div class="list">
       <h3>
@@ -193,10 +159,15 @@ export default {
       width: 3rem;
       margin: 0.4rem auto;
     }
-    svg {
+    i {
       position: absolute;
       bottom: 0.1rem;
       right: 0.15rem;
+      font-size: 0.3rem;
+      color: #ffffff;
+    }
+    .icon-aixin1 {
+      color: #ff4040;
     }
   }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="search">
     <div class="searchBox">
-      <i class="iconfont icon-icon-test">搜索</i>
+      <i class="iconfont icon-sousuo">搜索</i>
     </div>
   </div>
 </template>

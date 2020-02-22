@@ -2,24 +2,8 @@
   <div class="search">
     <header>
       <div class="searchBox">
-        <svg
-          t="1581831827324"
-          class="icon back"
-          viewBox="0 0 1024 1024"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          p-id="2704"
-          width="20"
-          height="20"
-          @click="$router.back()"
-        >
-          <path
-            d="M129.465 495.738c-11.408 11.408-11.408 29.855 0 41.142l351.952 351.952c11.408 11.408 29.855 11.408 41.142 0 5.703-5.703 8.496-13.107 8.496-20.631s-2.791-14.928-8.496-20.631l-302.194-302.194h650.627c16.142 0 29.127-12.986 29.127-29.127s-12.986-29.127-29.127-29.127h-650.627l302.194-302.194c5.703-5.703 8.496-13.107 8.496-20.631s-2.791-14.928-8.496-20.631c-11.408-11.408-29.855-11.408-41.142 0l-351.952 352.074z"
-            fill="#ffffff"
-            p-id="2705"
-          />
-        </svg>
-        <i class="iconfont icon-icon-test"></i>
+        <i class="iconfont icon-flow back" @click="$router.back()"></i>
+        <i class="iconfont icon-sousuo"></i>
         <input
           placeholder="请输入歌手名或歌曲名"
           v-model="keyword"
@@ -53,7 +37,7 @@
         <ul class="songList" v-if="listInfo">
           <li v-for="(item,index) in listInfo" @click="liClick(index)" :key="item.id + index">
             <div class="musicLogo">
-              <i class="iconfont icon-yinle" />
+              <i class="iconfont icon-yinyue" />
             </div>
             <div class="name_li">{{item.name}}</div>
             <div class="singer_li">{{item.singer}}</div>
@@ -65,42 +49,11 @@
       <ul>
         <li v-for="(item,index) in searchHistory" :key="index" @click="searchForHistory(item)">
           <div class="item">
-            <svg
-              t="1581847046448"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="4448"
-              width="22"
-              height="22"
-            >
-              <path
-                d="M512 959.7C265.2 959.7 64.3 758.9 64.3 512S265.2 64.3 512 64.3 959.7 265.1 959.7 512 758.8 959.7 512 959.7z m0-833.6c-212.8 0-385.9 173.1-385.9 385.9S299.2 897.9 512 897.9 897.9 724.8 897.9 512 724.8 126.1 512 126.1z"
-                p-id="4449"
-                fill="#8a8a8a"
-              />
-              <path d="M774.4 589.2H434.8V265h61.8v262.4h277.8z" p-id="4450" fill="#8a8a8a" />
-            </svg>
+             <i class="iconfont icon-lishijilu"></i>
             <div>{{item}}</div>
           </div>
           <div class="close" @click.stop="deleteItem(index)">
-            <svg
-              t="1581733631069"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="965"
-              width="18"
-              height="18"
-            >
-              <path
-                d="M953.6 0L1024 73.856 583.808 523.008l418.56 427.136L930.944 1024 512 596.352 93.056 1024l-70.4-73.856L440.448 523.52 0 73.856 71.424 0l440.96 450.176L953.472 0z"
-                p-id="966"
-                fill="#8a8a8a"
-              />
-            </svg>
+              <i class="iconfont icon-guanbi"></i>
           </div>
         </li>
       </ul>
@@ -275,6 +228,9 @@ header {
     .back {
       position: absolute;
       left: -0.3rem;
+      color: #ffffff;
+      font-size: 0.2rem;
+      top: 0.15rem;
     }
     i {
       height: 0.25rem;
@@ -377,8 +333,9 @@ header {
       justify-content: center;
       color: #666666;
       margin-left: 0.2rem;
-      svg {
+      i {
         margin-right: 0.1rem;
+        font-size: .2rem;
       }
     }
     .close {

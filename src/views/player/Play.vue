@@ -17,7 +17,7 @@
       <div class="right" v-if="player">
         <i class="iconfont icon-zanting active" v-if="player.paused" @click="changeStatus(true)"></i>
         <i class="iconfont icon-bofang" v-else @click="changeStatus(false)"></i>
-        <i class="iconfont icon-liebiao" @click="showList=!showList"></i>
+        <i class="iconfont icon-list" @click="showList=!showList"></i>
       </div>
     </div>
     <div id="pagePlayer" v-show="$store.state.fullscreen">
@@ -28,7 +28,7 @@
       <div class="top">
         <div class="navWrapper clear">
           <div class="back" @click="backClick">
-            <i class="iconfont icon-wei-" />
+            <i class="iconfont icon-xiangxia" />
           </div>
           <div class="nav">
             <span v-if="songInfo" class="first-marquee">{{songInfo.title}}</span>
@@ -55,47 +55,11 @@
             </div>
           </div>
           <div class="right">
-            <!-- <i class="iconfont icon-xiai" /> -->
-            <svg
-              t="1581989706629"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="919"
-              width="25"
-              height="25"
-              @click="addToFavList()"
-              v-if="!isFav"
-            >
-              <path
-                d="M833.1 244.9c-73.2-73.2-193-73.2-266.1 0l-55.9 55.9-54-54c-73.2-73.2-193-73.2-266.1 0-36.6 36.6-54.9 84.8-54.9 133.1S154.4 476.4 191 513l321 321 321.1-323c73.2-73.2 73.2-193 0-266.1z m-45.3 220.9l-276 277.6-275.6-275.8c-23.3-23.3-36.1-54.5-36.1-87.8s12.8-64.5 36.1-87.8 54.5-36.2 87.8-36.2 64.5 12.8 87.8 36.2l99.3 99.3 101.2-101.1c23.3-23.3 54.5-36.2 87.8-36.2s64.5 12.8 87.8 36.2c23.3 23.3 36.1 54.5 36.1 87.8s-12.8 64.4-36.2 87.8z"
-                p-id="920"
-                fill="#ffffff"
-              />
-            </svg>
-            <svg
-              t="1581989726607"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="1117"
-              width="25"
-              height="25"
-              @click="removeToFavList()"
-              v-else
-            >
-              <path
-                d="M833.1 244.9c-73.2-73.2-193-73.2-266.1 0l-55.9 55.9-54-54c-73.2-73.2-193-73.2-266.1 0-73.2 73.2-73.2 193 0 266.1L512 834l321.1-323c73.2-73.2 73.2-193 0-266.1z"
-                p-id="1118"
-                fill="#FF4040"
-              />
-            </svg>
+            <i @click="addToFavList()" v-if="!isFav" class="iconfont icon-aixin" />
+            <i @click="removeToFavList()" v-else class="iconfont icon-aixin1" />
             <a v-if="src&&songInfo" :href="src" target="_blank">
-              <i class="iconfont icon-xiazai" />
+              <i class="iconfont icon-download" />
             </a>
-            <!--:download="`${songInfo.title}-${songInfo.singer[0].name}.mp3`"-->
           </div>
         </div>
       </div>
@@ -153,52 +117,12 @@
               v-if="$store.state.playStatus==='normal'"
               @click="changeMusicStatus()"
             ></i>
-            <svg
-              t="1581769011277"
-              class="icon loopIcon"
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="2319"
-              width="30"
-              height="30"
-              @click="changeMusicStatus()"
+            <i
+              class="iconfont icon-danquxunhuan"
               v-else-if="$store.state.playStatus==='loop'"
-            >
-              <path
-                d="M773.597867 203.776l-0.273067 0.443733a33.621333 33.621333 0 0 0-20.343467-6.485333c-18.978133 0.785067-33.723733 16.725333-32.9728 35.771733a33.826133 33.826133 0 0 0 15.633067 26.794667l-0.1024 0.170667a375.227733 375.227733 0 0 1 166.2976 311.876266c0 207.018667-168.448 375.466667-375.466667 375.466667-27.818667 0-27.818667 0-54.340266-2.901333-90.453333-9.898667-152.610133-58.9824-155.5456-61.201067a375.330133 375.330133 0 0 1-165.5808-311.364267c0-201.4208 159.5392-365.841067 358.843733-374.647466l-41.984 40.823466 0.8192 0.853334a33.860267 33.860267 0 0 0-15.2576 29.218133c0.750933 18.978133 16.725333 33.757867 35.669333 33.041067a33.792 33.792 0 0 0 26.0096-14.472534l0.3072 0.341334 128.648534-124.996267L515.6864 34.0992l-0.4096 0.4096a33.6896 33.6896 0 0 0-26.3168-11.400533c-18.944 0.750933-33.6896 16.725333-32.9728 35.703466a33.8944 33.8944 0 0 0 13.038933 25.156267l45.226667 45.2608C275.182933 135.714133 82.602667 331.741867 82.602667 572.347733c0 147.626667 73.1136 285.149867 193.194666 366.114134 3.072 2.56 77.550933 62.190933 188.757334 74.308266 29.422933 3.208533 31.1296 3.310933 61.781333 3.310934 244.667733 0 443.733333-199.0656 443.733333-443.733334A443.392 443.392 0 0 0 773.597867 203.776"
-                p-id="2320"
-                fill="#ffffff"
-              />
-              <path
-                d="M542.071467 400.827733a33.28 33.28 0 0 0-17.134934 6.075734l-0.170666-0.3072-106.8032 69.700266 0.170666 0.273067a33.9968 33.9968 0 0 0-15.837866 29.696c0.750933 18.944 16.725333 33.723733 35.669333 32.9728a33.109333 33.109333 0 0 0 17.1008-6.0416l0.2048 0.273067 53.998933-35.259734v249.856h0.034134c0 0.477867-0.238933 0.887467-0.2048 1.365334a34.2016 34.2016 0 1 0 68.4032-1.365334h0.034133v-0.170666c0-0.4096 0.2048-0.750933 0.2048-1.160534 0-0.273067-0.170667-0.477867-0.2048-0.785066V435.2c0-0.477867 0.2048-0.887467 0.2048-1.3312a34.4064 34.4064 0 0 0-35.669333-33.041067"
-                p-id="2321"
-                fill="#ffffff"
-              />
-            </svg>
-            <svg
-              t="1581767784123"
-              class="icon randomIcon"
-              viewBox="0 0 1152 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="1775"
-              width="30"
-              height="30"
               @click="changeMusicStatus()"
-              v-else
-            >
-              <path
-                d="M336 334.08l58.56 89.92 76.16-117.44-27.2-42.24A324.8 324.8 0 0 0 192 128H0v128h192a201.6 201.6 0 0 1 144 78.08zM864 256h96v128l192-192-192-192v128h-96a324.8 324.8 0 0 0-251.52 136.32l-276.48 425.6A201.6 201.6 0 0 1 192 768H0v128h192a324.8 324.8 0 0 0 251.52-136.32l276.48-425.6A200.32 200.32 0 0 1 864 256z"
-                p-id="1776"
-                fill="#ffffff"
-              />
-              <path
-                d="M960 768h-96a200.32 200.32 0 0 1-144-78.08l-58.56-89.92-76.16 117.44 27.2 42.24A324.8 324.8 0 0 0 864 896h96v128l192-192-192-192z"
-                p-id="1777"
-                fill="#ffffff"
-              />
-            </svg>
+            ></i>
+            <i class="iconfont icon-ziyuan" v-else @click="changeMusicStatus()"></i>
           </div>
           <div class="icon i-left">
             <i class="iconfont icon-kuaitui" @click="changeIndex(-1)"></i>
@@ -215,7 +139,7 @@
             <i class="iconfont icon-kuaijin" @click="changeIndex(1)"></i>
           </div>
           <div class="icon i-right">
-            <i class="iconfont icon-liebiao" @click="showList=!showList"></i>
+            <i class="iconfont icon-list" @click="showList=!showList"></i>
           </div>
         </div>
       </div>
@@ -230,27 +154,12 @@
         <ul>
           <li v-for="(item,index) in $store.state.playlist" :key="item.id">
             <div class="info" @click="setCurrentIndex(index)">
-              <i v-if="index===$store.state.currentIndex" class="iconfont icon-yinle" />
+              <i v-if="index===$store.state.currentIndex" class="iconfont icon-yinyue" />
               <span class="name">{{item.name}}</span>
               <span class="singer">{{item.singer}}</span>
             </div>
             <div @click="delCurrentIndex(index)">
-              <svg
-                t="1581733631069"
-                class="icon"
-                viewBox="0 0 1024 1024"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                p-id="965"
-                width="18"
-                height="18"
-              >
-                <path
-                  d="M953.6 0L1024 73.856 583.808 523.008l418.56 427.136L930.944 1024 512 596.352 93.056 1024l-70.4-73.856L440.448 523.52 0 73.856 71.424 0l440.96 450.176L953.472 0z"
-                  p-id="966"
-                  fill="#707070"
-                />
-              </svg>
+              <i class="iconfont icon-guanbi"></i>
             </div>
           </li>
         </ul>
@@ -338,8 +247,8 @@ export default {
     this.player = this.$refs.audio;
   },
   methods: {
-    gotoSinger(){
-      this.$router.push({path:`/singer/${this.songInfo.singer[0].mid}`});
+    gotoSinger() {
+      this.$router.push({ path: `/singer/${this.songInfo.singer[0].mid}` });
       this.setFullScreen(false);
       this.setCurSingerPic(this.songPic);
     },
@@ -415,7 +324,7 @@ export default {
       changePlayStatus: "Change_Play_Status",
       setFavList: "SET_FAVLIST",
       removeFavListItem: "REMOVE_TO_FAVLIST",
-      setCurSingerPic:"SET_CURSINGER_PIC"
+      setCurSingerPic: "SET_CURSINGER_PIC"
     }),
     changeIndex(flag) {
       this.setCurrentIndex(this.$store.state.currentIndex + flag);
@@ -619,6 +528,9 @@ export default {
       height: 0.5rem;
       line-height: 0.5rem;
       text-align: center;
+      i {
+        font-size: 0.4rem;
+      }
     }
     div.nav {
       position: absolute;
@@ -678,6 +590,7 @@ export default {
         margin-right: 0.2rem;
         justify-content: space-evenly;
         text-align: center;
+        margin-top: 0.1rem;
         a {
           color: #ebebeb;
           flex: 1;
@@ -686,6 +599,13 @@ export default {
           flex: 1;
           margin: 0.1rem;
           font-size: var(--large);
+        }
+        i {
+          font-size: 0.3rem;
+          margin-bottom: 0.2rem;
+        }
+        .icon-aixin1{
+          color: #ff4040;
         }
       }
     }
@@ -730,17 +650,12 @@ export default {
       display: flex;
       justify-content: space-evenly;
       text-align: center;
-      .randomIcon,
-      .loopIcon {
-        position: relative;
-        top: 0.1rem;
-      }
       div {
         flex: 1;
       }
 
       i {
-        font-size: 0.3rem;
+        font-size: 0.4rem;
         color: white;
 
         &.active {
@@ -755,7 +670,7 @@ export default {
       }
       div:nth-of-type(5) {
         i {
-          font-size: 0.22rem;
+          font-size: 0.42rem;
         }
       }
     }
@@ -816,6 +731,11 @@ export default {
         left: -0.3rem;
         color: #8156e8;
       }
+      .icon-guanbi {
+        position: static;
+        color: #707070;
+        font-size: .2rem;
+      }
     }
   }
   p {
@@ -827,7 +747,7 @@ export default {
 }
 .lyric {
   position: relative;
-  height: calc(100% - .51rem);
+  height: calc(100% - 0.51rem);
   overflow: hidden;
   z-index: 13;
   transform: translateY(0.22rem);
@@ -839,20 +759,20 @@ export default {
   overflow: hidden;
   text-align: center;
   .text {
-    line-height: .44rem;
+    line-height: 0.44rem;
     color: #ffffff;
-    font-size: .15rem;
+    font-size: 0.15rem;
     &.current {
       color: #8156e8;
-      font-size: .17rem;
+      font-size: 0.17rem;
       font-weight: 600;
     }
   }
   .no-lyric {
-    line-height: .44rem;
+    line-height: 0.44rem;
     margin-top: 60%;
     color: #ffffff;
-    font-size: .15rem;
+    font-size: 0.15rem;
   }
 }
 </style>

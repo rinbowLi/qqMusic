@@ -1,23 +1,7 @@
 <template>
   <div class="mv">
     <div class="header">
-      <svg
-        t="1581831827324"
-        class="icon"
-        viewBox="0 0 1024 1024"
-        version="1.1"
-        xmlns="http://www.w3.org/2000/svg"
-        p-id="2704"
-        width="20"
-        height="20"
-        @click="$router.back()"
-      >
-        <path
-          d="M129.465 495.738c-11.408 11.408-11.408 29.855 0 41.142l351.952 351.952c11.408 11.408 29.855 11.408 41.142 0 5.703-5.703 8.496-13.107 8.496-20.631s-2.791-14.928-8.496-20.631l-302.194-302.194h650.627c16.142 0 29.127-12.986 29.127-29.127s-12.986-29.127-29.127-29.127h-650.627l302.194-302.194c5.703-5.703 8.496-13.107 8.496-20.631s-2.791-14.928-8.496-20.631c-11.408-11.408-29.855-11.408-41.142 0l-351.952 352.074z"
-          fill="#8156e8"
-          p-id="2705"
-        />
-      </svg>
+      <i class="iconfont icon-flow"  @click="$router.back()"></i>
       <div class="title">{{videoTitle}}</div>
       <div class="like">喜欢</div>
     </div>
@@ -81,6 +65,9 @@ video {
   align-items: center;
   padding: 0 10px;
   color: #8156e8;
+  i{
+    font-size: .3rem;
+  }
   .title {
     width: 80%;
     white-space: nowrap;

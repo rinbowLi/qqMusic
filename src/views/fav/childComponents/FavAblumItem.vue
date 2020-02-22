@@ -7,22 +7,7 @@
       <div class="title">{{itemInfo.dissname}}</div>
       <div class="count">共{{itemInfo.songnum}}首</div>
       <div class="svg">
-        <svg
-          t="1581997896055"
-          class="icon"
-          viewBox="0 0 1024 1024"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          p-id="2159"
-          width="20"
-          height="20"
-        >
-          <path
-            d="M330.56 247.68a32 32 0 0 1 42.88-47.36l320 288a32 32 0 0 1 0 47.36l-320 288a32 32 0 0 1-42.88-47.36L624.32 512z"
-            p-id="2160"
-            fill="#707070"
-          />
-        </svg>
+        <i class="iconfont icon-xiangyou"></i>
       </div>
     </div>
   </div>
@@ -46,7 +31,7 @@ export default {
 .item {
   background: #fff;
   display: flex;
- padding: 0.1rem .15rem;
+  padding: 0.1rem 0.15rem;
   border-radius: 0.08rem;
   overflow: hidden;
   margin-top: 0.1rem;
@@ -79,10 +64,12 @@ export default {
       color: #999;
       font-size: 0.14rem;
     }
-    .svg {
+
+    i {
       position: absolute;
       right: 0.1rem;
       top: 0.2rem;
+      font-size: 0.3rem;
     }
   }
 }
