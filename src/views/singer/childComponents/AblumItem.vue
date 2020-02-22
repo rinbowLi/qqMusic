@@ -4,8 +4,8 @@
       <img :src="img" alt />
     </div>
     <div class="right">
-      <div class="title">{{itemInfo.dissname}}</div>
-      <div class="count">共{{itemInfo.songnum}}首</div>
+      <div class="title">{{itemInfo.album_name}}</div>
+      <div class="count">共{{itemInfo.latest_song.song_count}}首</div>
       <div class="svg">
         <svg
           t="1581997896055"

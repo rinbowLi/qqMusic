@@ -1,5 +1,11 @@
 <template>
-  <div class="singer">
+  <div class="singer" :style="{'bottom':$store.state.playlist.length>0?'0.6rem':'0'}">
+    <div class="back" :style="style">
+      <span class="back" @click="$router.back()">
+        <i class="iconfont icon-fanhui" />返回
+      </span>
+      <div class="name nowrap">{{singerName}}</div>
+    </div>
     <div class="imgBox">
       <img v-lazy="imgPic" class="singerImg" />
       <div class="singerName">{{singerName}}</div>
@@ -19,13 +25,31 @@
         </ul>
       </div>
       <div v-else-if="navInfo.activeIndex===1">
-           <AblumItem
+        <AblumItem
           class="listItem"
           v-for=" item in Albumlist"
           :itemInfo="item"
-          :key="item.disstid"
-          @click.native="$router.push(`/list/${item.disstid}`)"
+          :key="item.album_mid"
         />
+        <!-- @click.native="$router.push(`/list/${item.album_mid}`)" -->
+      </div>
+      <div v-else-if="navInfo.activeIndex===2" class="mvList">
+        <ul>
+          <li v-for="item in mvList" :key="item.id" @click="$router.push(`/mv/${item.vid}`)">
+            <img v-lazy="item.pic" :alt="item.title" />
+            <span class="date">{{item.date}}</span>
+            <span class="icon">
+              <i class="iconfont icon-shexiang"></i>
+              {{listenCount(item.listenCount)}}
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div v-else>
+        <div class="singerInfo">
+          <div class="title">歌手资料</div>
+          <div class="info">{{singerInfo.singer_brief}}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -33,7 +57,7 @@
 
 <script>
 import Header2 from "@/components/content/header/Header2";
-import AblumItem from "./childComponents/AblumItem"
+import AblumItem from "./childComponents/AblumItem";
 import { singerApi } from "@/api/artist";
 import { mapActions } from "vuex";
 export default {
@@ -52,7 +76,10 @@ export default {
         ]
       },
       songList: [],
-      Albumlist:[]
+      Albumlist: [],
+      opacity: 0.1,
+      mvList: [],
+      singerInfo: {}
     };
   },
   components: {
@@ -70,6 +97,20 @@ export default {
       } else {
         return `${count} 粉丝`;
       }
+    },
+    style() {
+      return {
+        background: `rgba(129,86,232,${this.opacity})`
+      };
+    },
+    listenCount() {
+      return function(count) {
+        if (count > 10000) {
+          return `${(count / 10000).toFixed(1)}万`;
+        } else {
+          return `${count}`;
+        }
+      };
     }
   },
   created() {
@@ -79,31 +120,46 @@ export default {
     this.getArtistAlbum(id);
     this.getArtistSong(id);
   },
+  mounted() {
+    let that = this;
+    window.addEventListener(
+      "scroll",
+      function(e) {
+        let scrollTop =
+          document.documentElement.scrollTop ||
+          window.pageYOffset ||
+          document.body.scrollTop;
+        that.opacity = (scrollTop / 340) * 0.5;
+      },
+      true
+    );
+  },
   methods: {
     ...mapActions({
       startPlayingMusic: "startPlayingMusic"
     }),
+
     //获取歌手详情
     getArtistDetail(id) {
       if (id) {
         singerApi.getArtistDetail(id).then(res => {
-          console.log(res, "歌手详情");
           this.singerName = res.data.singer_info.name;
           this.fansCount = res.data.singer_info.fans;
+          this.singerInfo = res.data;
         });
       }
     },
     getArtistMv(id) {
       if (id) {
         singerApi.getArtistMv(id).then(res => {
-          console.log(res, "歌手mv列表");
+          this.mvList = res.data;
         });
       }
     },
     getArtistAlbum(id) {
       if (id) {
         singerApi.getArtistAlbum(id).then(res => {
-          console.log(res, "歌手专辑列表");
+          this.Albumlist = res.data;
         });
       }
     },
@@ -119,7 +175,11 @@ export default {
     },
     liClick(index) {
       let list = this.songList.map(item => {
-        return { name: item.musicData.songname, singer: item.musicData.singer[0].name, id: item.musicData.songmid };
+        return {
+          name: item.musicData.songname,
+          singer: item.musicData.singer[0].name,
+          id: item.musicData.songmid
+        };
       });
       this.startPlayingMusic({ list, index });
     }
@@ -130,6 +190,38 @@ export default {
 <style lang="scss" scoped>
 .singer {
   position: relative;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  //overflow-y: auto;
+  .back {
+    position: fixed;
+    z-index: 10;
+    color: #fff;
+    left: 0;
+    top: 0;
+    height: 0.4rem;
+    width: 100%;
+    line-height: 0.4rem;
+    padding-left: 0.1rem;
+
+    span.back {
+      i {
+        display: inline-block;
+        transform: scale(0.9);
+        position: relative;
+        top: 0.02rem;
+      }
+
+      font-size: var(--small-x);
+    }
+
+    div.name {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
   .imgBox {
     position: relative;
     background-color: var(--background-color);
@@ -187,6 +279,62 @@ export default {
             color: var(--text-info);
           }
         }
+      }
+    }
+    .mvList {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+
+      ul {
+        padding: 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        li {
+          width: 50%;
+          position: relative;
+          padding: 0.05rem;
+          height: 1.2rem;
+          img {
+            width: 100%;
+            border-radius: 5px;
+          }
+          .icon {
+            position: absolute;
+            right: 0.13rem;
+            bottom: 0.13rem;
+            color: #ffffff;
+            font-size: 0.13rem;
+            i {
+              position: relative;
+              top: 0.03rem;
+            }
+          }
+          .date {
+            position: absolute;
+            left: 0.13rem;
+            bottom: 0.13rem;
+            color: #ffffff;
+            font-size: 0.13rem;
+          }
+        }
+      }
+    }
+    .singerInfo {
+      .title {
+        margin: 0.1rem;
+        font-size: 0.17rem;
+        font-weight: 600;
+      }
+      .info {
+        font-size: 0.15rem;
+        text-indent: 0.25rem;
+        letter-spacing: 0.03rem;
+        color: #999;
+        line-height: 0.2rem;
+        padding: 0.1rem;
       }
     }
   }
