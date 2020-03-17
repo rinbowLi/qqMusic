@@ -76,6 +76,7 @@ export default {
   height: calc(100vh - 0.94rem);
   position: relative;
   top: 0.94rem;
+  overflow: hidden;
 }
 .active {
   height: calc(100vh - 0.94rem - 0.64rem);

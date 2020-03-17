@@ -747,7 +747,8 @@ export default {
 }
 .lyric {
   position: relative;
-  height: calc(100% - 0.51rem);
+  // height: calc(100% - 0.51rem);
+  height: 1rem;
   overflow: hidden;
   z-index: 13;
   transform: translateY(0.22rem);
